@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { makeResponse } from 'config/response.utils';
+import { makeResponse } from '../../common/response.utils';
 import { baseResponse } from '../../config/baseResponse.utils';
 
 @Controller('users')
