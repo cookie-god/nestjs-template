@@ -1,4 +1,70 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { makeResponse } from 'common/response.utils';
+import { baseResponse } from 'config/baseResponse.utils';
+import { UserInfo } from 'src/user/entity/userInfo.entity';
+import { UserSalt } from 'src/user/entity/userSalt.entity';
+import { Repository } from 'typeorm';
+import { SignInDto } from './dto/sign-in.dto';
+import { SignUpDto } from './dto/sign-up.dto';
+import { saltHashPassword, validatePassword } from '../../config/security.utils';
 
 @Injectable()
-export class AuthService {}
+export class AuthService {
+    constructor(
+        @InjectRepository(UserInfo)
+        private readonly authRepository: Repository<UserInfo>,
+        @InjectRepository(UserSalt)
+        private readonly saltRepository: Repository<UserSalt>,
+        private jwtService: JwtService
+    ){};
+
+    async signInUser(signInData: SignInDto) {
+        
+        const user = await this.authRepository.findOne({where: {email: signInData.email, status: "ACTIVE"}});
+        if (user == undefined){
+            return baseResponse.NON_EXIST_EMAIL;
+        }
+        
+        const userSalt = await this.saltRepository.findOne({where: {userId: user.id}});
+
+        if (!validatePassword(signInData.password, userSalt.salt, user.password)) {
+            return baseResponse.NON_MATCH_PASSWORD;
+        }
+
+        const payload =  {email: signInData.email, password: signInData.password}
+        const token = await this.jwtService.sign(payload);
+        const data = {
+            jwt: token,
+            email: signInData.email,
+            password: signInData.password
+        }
+        
+        return makeResponse(baseResponse.SUCCESS, data);
+    }
+
+    async signUpUser(signUpData: SignUpDto) {
+        
+        const securityData = saltHashPassword(signUpData.password)
+
+        var userInfo = new UserInfo();
+        userInfo.email = signUpData.email;
+        userInfo.password = securityData.hashedPassword;
+        userInfo.nickname = signUpData.nickname;
+        const createUserData = await this.authRepository.save(userInfo);
+
+        var userSalt = new UserSalt();
+        userSalt.salt = securityData.salt;
+        userSalt.userId = createUserData.id;
+        await this.saltRepository.save(userSalt);
+
+        const data = {
+            userId: createUserData.id,
+            email: createUserData.email,
+            nickname: createUserData.nickname
+        }
+
+        return makeResponse(baseResponse.SUCCESS, data);
+    }
+}
