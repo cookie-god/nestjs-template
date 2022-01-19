@@ -8,21 +8,18 @@ export class UserInfo {
   @Column({ length: 40 })
   email: string;
 
-  @Column({ length: 100 })
+  @Column({ length: 256 })
   password: string;
 
   @Column({ length: 10 })
   nickname: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP" })
   createdAt: string;
 
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-  })
+  @Column({ type: 'timestamp', default: () => "CURRENT_TIMESTAMP" , onUpdate: "CURRENT_TIMESTAMP"})
   updatedAt: string;
 
-  @Column({ default: 'ACTIVE' })
+  @Column({ default: "ACTIVE" })
   status: string;
 }
