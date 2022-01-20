@@ -9,14 +9,14 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt/jwt.strategy';
 
 @Module({
-    imports:[
-        TypeOrmModule.forFeature([UserInfo, UserSalt]),
-        JwtModule.register({
-            secret: secret.jwt_secret_key,
-            signOptions: {expiresIn: '6h'},
-        })
-    ],
-    controllers: [AuthController],
-    providers: [AuthService, JwtStrategy]
+  imports: [
+    TypeOrmModule.forFeature([UserInfo, UserSalt]),
+    JwtModule.register({
+      secret: secret.jwt_secret_key,
+      signOptions: { expiresIn: '6h' },
+    }),
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}
