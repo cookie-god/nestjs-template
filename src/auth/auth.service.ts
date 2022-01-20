@@ -39,7 +39,11 @@ export class AuthService {
       return baseResponse.NON_MATCH_PASSWORD;
     }
 
-    const payload = { email: signInData.email, password: signInData.password };
+    const payload = {
+      userId: user.id,
+      email: signInData.email,
+      password: signInData.password,
+    };
     const token = await this.jwtService.sign(payload);
     const data = {
       jwt: token,
