@@ -6,6 +6,6 @@ import { baseResponse } from '../../config/baseResponse.utils';
 export class UserController {
   @Get()
   getUsers() {
-    return makeResponse(baseResponse.USER_ID_EMPTY, { hi: 'hi' });
+    // return makeResponse(baseResponse.USER_ID_EMPTY, { hi: 'hi' });
   }
 }

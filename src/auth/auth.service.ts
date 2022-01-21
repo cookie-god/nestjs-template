@@ -28,7 +28,7 @@ export class AuthService {
       where: { email: signInData.email, status: 'ACTIVE' },
     });
     if (user == undefined) {
-      return baseResponse.NON_EXIST_EMAIL;
+      return;
     }
 
     const userSalt = await this.saltRepository.findOne({
@@ -42,13 +42,11 @@ export class AuthService {
     const payload = {
       userId: user.id,
       email: signInData.email,
-      password: signInData.password,
     };
     const token = await this.jwtService.sign(payload);
     const data = {
       jwt: token,
       email: signInData.email,
-      password: signInData.password,
     };
 
     return makeResponse(baseResponse.SUCCESS, data);
@@ -75,5 +73,6 @@ export class AuthService {
     };
 
     return makeResponse(baseResponse.SUCCESS, data);
+    // return makeResponse(new baseResponse().SUCCESS, data);
   }
 }

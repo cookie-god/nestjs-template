@@ -1,8 +1,13 @@
 export const baseResponse = {
   SUCCESS: { isSuccess: true, code: 1000, message: '성공' },
-  USER_ID_EMPTY: {
+  CHECK_JWT_TOKEN: {
     isSuccess: false,
     code: 2000,
+    message: 'JWT 토큰을 확인해주세요.',
+  },
+  USER_ID_EMPTY: {
+    isSuccess: false,
+    code: 2001,
     message: '아이디가 없습니다.',
   },
   NON_EXIST_EMAIL: {
