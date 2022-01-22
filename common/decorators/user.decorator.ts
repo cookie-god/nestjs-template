@@ -1,11 +1,29 @@
 import {
-  BadRequestException,
   createParamDecorator,
   ExecutionContext,
   HttpException,
 } from '@nestjs/common';
 import { regularExp } from 'config/regularExp';
 import { response } from 'config/response.utils';
+
+export const SignInUser = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const body = ctx.switchToHttp().getRequest().body;
+    if (!body.email) {
+      throw new HttpException(response.EMPTY_EMAIL, 201);
+    }
+    if (!regularExp.emailRegex.test(body.email)) {
+      throw new HttpException(response.INVALID_EMAIL, 201);
+    }
+    if (!body.password) {
+      throw new HttpException(response.EMPTY_PASSWORD, 201);
+    }
+    if (!regularExp.passwordRegex.test(body.password)) {
+      throw new HttpException(response.INVALID_PASSWORD, 201);
+    }
+    return body;
+  },
+);
 
 export const SignUpUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
@@ -33,25 +51,6 @@ export const SignUpUser = createParamDecorator(
     }
     if (!body.nickname) {
       throw new HttpException(response.EMPTY_NICKNAME, 201);
-    }
-    return body;
-  },
-);
-
-export const SignInUser = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
-    const body = ctx.switchToHttp().getRequest().body;
-    if (!body.email) {
-      throw new HttpException(response.EMPTY_EMAIL, 201);
-    }
-    if (!regularExp.emailRegex.test(body.email)) {
-      throw new HttpException(response.INVALID_EMAIL, 201);
-    }
-    if (!body.password) {
-      throw new HttpException(response.EMPTY_PASSWORD, 201);
-    }
-    if (!regularExp.passwordRegex.test(body.password)) {
-      throw new HttpException(response.INVALID_PASSWORD, 201);
     }
     return body;
   },
