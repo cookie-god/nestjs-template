@@ -64,4 +64,9 @@ export const response = {
     code: 2011,
     message: '닉네임을 입력해주세요.',
   },
+  EXIST_EMAIL: {
+    isSuccess: false,
+    code: 2012,
+    message: '이미 사용중인 이메일입니다.',
+  },
 };

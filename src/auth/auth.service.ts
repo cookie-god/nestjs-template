@@ -28,7 +28,7 @@ export class AuthService {
       where: { email: signInData.email, status: 'ACTIVE' },
     });
     if (user == undefined) {
-      return;
+      return response.NON_EXIST_EMAIL;
     }
 
     const userSalt = await this.saltRepository.findOne({
@@ -54,6 +54,14 @@ export class AuthService {
 
   async signUpUser(signUpData: SignUpDto) {
     const securityData = saltHashPassword(signUpData.password);
+
+    const user = await this.authRepository.findOne({
+      where: { email: signUpData.email, status: 'ACTIVE' },
+    });
+
+    if (user != undefined) {
+      return response.EXIST_EMAIL;
+    }
 
     const userInfo = new UserInfo();
     userInfo.email = signUpData.email;
