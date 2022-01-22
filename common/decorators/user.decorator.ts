@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   createParamDecorator,
   ExecutionContext,
   ForbiddenException,
@@ -12,28 +13,28 @@ export const SignUpUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const body = ctx.switchToHttp().getRequest().body;
     if (!body.email) {
-      throw new UnauthorizedException(response.EMPTY_EMAIL);
+      throw new BadRequestException(response.EMPTY_EMAIL);
     }
     if (!regularExp.emailRegex.test(body.email)) {
-      throw new UnauthorizedException(response.INVALID_EMAIL);
+      throw new BadRequestException(response.INVALID_EMAIL);
     }
     if (!body.password) {
-      throw new UnauthorizedException(response.EMPTY_PASSWORD);
+      throw new BadRequestException(response.EMPTY_PASSWORD);
     }
     if (!regularExp.passwordRegex.test(body.password)) {
-      throw new UnauthorizedException(response.INVALID_PASSWORD);
+      throw new BadRequestException(response.INVALID_PASSWORD);
     }
     if (!body.confirmPassword) {
-      throw new UnauthorizedException(response.EMPTY_CONFIRM_PASSWORD);
+      throw new BadRequestException(response.EMPTY_CONFIRM_PASSWORD);
     }
     if (!regularExp.passwordRegex.test(body.confirmPassword)) {
-      throw new UnauthorizedException(response.INVALID_CONFIRM_PASSWORD);
+      throw new BadRequestException(response.INVALID_CONFIRM_PASSWORD);
     }
     if (body.password !== body.confirmPassword) {
-      throw new UnauthorizedException(response.NOT_MATCH_CONFIRM_PASSWORD);
+      throw new BadRequestException(response.NOT_MATCH_CONFIRM_PASSWORD);
     }
     if (!body.nickname) {
-      throw new UnauthorizedException(response.EMPTY_NICKNAME);
+      throw new BadRequestException(response.EMPTY_NICKNAME);
     }
     return body;
   },
@@ -43,16 +44,16 @@ export const SignInUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const body = ctx.switchToHttp().getRequest().body;
     if (!body.email) {
-      throw new UnauthorizedException(response.EMPTY_EMAIL);
+      throw new BadRequestException(response.EMPTY_EMAIL);
     }
     if (!regularExp.emailRegex.test(body.email)) {
-      throw new UnauthorizedException(response.INVALID_EMAIL);
+      throw new BadRequestException(response.INVALID_EMAIL);
     }
     if (!body.password) {
-      throw new UnauthorizedException(response.EMPTY_PASSWORD);
+      throw new BadRequestException(response.EMPTY_PASSWORD);
     }
     if (!regularExp.passwordRegex.test(body.password)) {
-      throw new UnauthorizedException(response.INVALID_PASSWORD);
+      throw new BadRequestException(response.INVALID_PASSWORD);
     }
     return body;
   },
