@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { makeResponse } from 'common/response.utils';
-import { baseResponse } from 'config/baseResponse.utils';
+import { response } from 'config/response.utils';
 import { UserInfo } from 'src/user/entity/userInfo.entity';
 import { UserSalt } from 'src/user/entity/userSalt.entity';
 import { Repository } from 'typeorm';
@@ -36,7 +36,7 @@ export class AuthService {
     });
 
     if (!validatePassword(signInData.password, userSalt.salt, user.password)) {
-      return baseResponse.NON_MATCH_PASSWORD;
+      return response.NON_MATCH_PASSWORD;
     }
 
     const payload = {
@@ -49,7 +49,7 @@ export class AuthService {
       email: signInData.email,
     };
 
-    return makeResponse(baseResponse.SUCCESS, data);
+    return makeResponse(response.SUCCESS, data);
   }
 
   async signUpUser(signUpData: SignUpDto) {
@@ -72,7 +72,6 @@ export class AuthService {
       nickname: createUserData.nickname,
     };
 
-    return makeResponse(baseResponse.SUCCESS, data);
-    // return makeResponse(new baseResponse().SUCCESS, data);
+    return makeResponse(response.SUCCESS, data);
   }
 }

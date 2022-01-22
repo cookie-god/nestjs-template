@@ -1,5 +1,9 @@
-export const baseResponse = {
-  SUCCESS: { isSuccess: true, code: 1000, message: '성공' },
+export const response = {
+  SUCCESS: {
+    isSuccess: true,
+    code: 1000,
+    message: '성공',
+  },
   CHECK_JWT_TOKEN: {
     isSuccess: false,
     code: 2000,

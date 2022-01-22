@@ -1,4 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { CurrentUser } from 'common/decorators/user.decorator';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -13,7 +14,9 @@ export class AuthController {
   }
 
   @Post('sign-up')
-  postSignUp(@Body() signUpData: SignUpDto) {
+  // @Body() signUpData: SignUpDto
+  postSignUp(@CurrentUser() signUpData: SignUpDto) {
+    console.log(signUpData);
     return this.authService.signUpUser(signUpData);
   }
 }

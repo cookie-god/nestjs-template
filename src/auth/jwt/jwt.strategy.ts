@@ -6,7 +6,7 @@ import { Payload } from './jwt.payload';
 import { Repository } from 'typeorm';
 import { UserInfo } from 'src/user/entity/userInfo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { baseResponse } from 'config/baseResponse.utils';
+import { response } from 'config/response.utils';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       where: { id: payload.userId, status: 'ACTIVE' },
     });
     if (user == undefined) {
-      throw new UnauthorizedException(baseResponse.CHECK_JWT_TOKEN);
+      throw new UnauthorizedException(response.CHECK_JWT_TOKEN);
     }
     return payload;
   }
