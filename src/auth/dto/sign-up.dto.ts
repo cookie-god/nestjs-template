@@ -8,5 +8,8 @@ export class SignUpDto {
   password: string;
 
   @IsString()
+  confirmPassword: string;
+
+  @IsString()
   nickname: string;
 }
