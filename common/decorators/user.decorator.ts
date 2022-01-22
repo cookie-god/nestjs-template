@@ -1,10 +1,12 @@
 import {
   createParamDecorator,
   ExecutionContext,
+  ForbiddenException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { regularExp } from 'config/regularExp';
 import { response } from 'config/response.utils';
+import { runInThisContext } from 'vm';
 
 export const SignUpUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
