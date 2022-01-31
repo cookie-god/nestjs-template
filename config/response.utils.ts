@@ -69,4 +69,9 @@ export const response = {
     code: 2012,
     message: '이미 사용중인 이메일입니다.',
   },
+  NON_EXIST_USER: {
+    isSuccess: false,
+    code: 2013,
+    message: '존재하지 않는 유저입니다.',
+  },
 };

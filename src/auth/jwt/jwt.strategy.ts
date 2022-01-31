@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { secret } from '../../../config/sercret';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -26,8 +30,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       where: { id: payload.userId, status: 'ACTIVE' },
     });
     if (user == undefined) {
-      throw new UnauthorizedException(response.CHECK_JWT_TOKEN);
+      throw new HttpException(response.NON_EXIST_USER, 201);
     }
-    return payload;
+    return user;
   }
 }
