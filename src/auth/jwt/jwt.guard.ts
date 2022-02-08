@@ -1,17 +1,6 @@
-import {
-  ExecutionContext,
-  ForbiddenException,
-  Header,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { makeResponse } from 'common/response.utils';
-// import { makeResponse } from 'common/response.utils';
 import { response } from 'config/response.utils';
-import { Observable } from 'rxjs';
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   handleRequest(err, user, info) {
