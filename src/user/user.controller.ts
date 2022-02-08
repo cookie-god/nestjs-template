@@ -4,8 +4,8 @@ import { response } from '../../config/response.utils';
 
 @Controller('users')
 export class UserController {
-  @Get()
-  getUsers() {
-    // return makeResponse(baseResponse.USER_ID_EMPTY, { hi: 'hi' });
-  }
+  // @Get()
+  // getUsers() {
+  //  return makeResponse(baseResponse.USER_ID_EMPTY, { hi: 'hi' });
+  // }
 }

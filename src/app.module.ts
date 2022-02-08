@@ -3,9 +3,11 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { LoggerMiddleware } from '../common/middlewares/logger.middleware';
+import { LoggerMiddleware } from 'config/logger/logger.middleware';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/auth.controller';
+import { UserController } from './user/user.controller';
 
 @Module({
   imports: [
@@ -27,6 +29,6 @@ import { AuthModule } from './auth/auth.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('cats');
+    consumer.apply(LoggerMiddleware).forRoutes(AuthController, UserController);
   }
 }

@@ -9,9 +9,9 @@ export class AppController {
     private readonly appService: AppService, // private readonly jwtService: JwtService,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  getHello(@Request() req): string {
-    return req.user;
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Get()
+  // getHello(@Request() req): string {
+  //   return req.user;
+  // }
 }
