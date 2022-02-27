@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { makeResponse } from 'common/response.utils';
+import { makeResponse } from 'common/function.utils';
 import { response } from 'config/response.utils';
 import { UserInfo } from 'src/user/entity/userInfo.entity';
 import { UserSalt } from 'src/user/entity/userSalt.entity';
