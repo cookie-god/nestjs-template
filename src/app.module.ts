@@ -20,6 +20,7 @@ import { UserController } from './user/user.controller';
       database: 'test',
       entities: [__dirname + '/**/entity/*.entity{.ts,.js}'],
       synchronize: true,
+      bigNumberStrings: false,
     }),
     UserModule,
     AuthModule,
