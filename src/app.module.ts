@@ -21,6 +21,7 @@ import { UserController } from './user/user.controller';
       entities: [__dirname + '/**/entity/*.entity{.ts,.js}'],
       synchronize: true,
       bigNumberStrings: false,
+      charset: 'utf8mb4',
     }),
     UserModule,
     AuthModule,
