@@ -1,11 +1,12 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignUpUser, SignInUser } from 'common/decorators/user.decorator';
 import { AuthService } from './auth.service';
-import { SignInDto } from './dto/sign-in.dto';
-import { SignUpDto } from './dto/sign-up.dto';
+import { SignInRequestDto } from './dto/sign-in-request.dto';
+import { SignUpRequestDto } from './dto/sign-up-request.dto';
 
 @Controller('auth')
+@ApiTags('AUTH')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -38,9 +39,9 @@ export class AuthController {
     description: '비밀번호가 일치하지 않습니다.',
   })
   @ApiOperation({ summary: '로그인' })
-  @ApiBody({ description: '로그인 DTO', type: SignInDto })
+  @ApiBody({ description: '로그인 DTO', type: SignInRequestDto })
   @Post('sign-in')
-  postSignIn(@SignInUser() signInData: SignInDto) {
+  postSignIn(@SignInUser() signInData: SignInRequestDto) {
     return this.authService.signInUser(signInData);
   }
 
@@ -85,9 +86,9 @@ export class AuthController {
     description: '이미 사용중인 이메일입니다.',
   })
   @ApiOperation({ summary: '회원가입' })
-  @ApiBody({ description: '회원가입 DTO', type: SignUpDto })
+  @ApiBody({ description: '회원가입 DTO', type: SignUpRequestDto })
   @Post('sign-up')
-  postSignUp(@SignUpUser() signUpData: SignUpDto) {
+  postSignUp(@SignUpUser() signUpData: SignUpRequestDto) {
     return this.authService.signUpUser(signUpData);
   }
 }

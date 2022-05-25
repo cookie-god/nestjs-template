@@ -6,8 +6,8 @@ import { response } from 'config/response.utils';
 import { UserInfo } from 'src/user/entity/userInfo.entity';
 import { UserSalt } from 'src/user/entity/userSalt.entity';
 import { Repository } from 'typeorm';
-import { SignInDto } from './dto/sign-in.dto';
-import { SignUpDto } from './dto/sign-up.dto';
+import { SignInRequestDto } from './dto/sign-in-request.dto';
+import { SignUpRequestDto } from './dto/sign-up-request.dto';
 import {
   saltHashPassword,
   validatePassword,
@@ -23,7 +23,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signInUser(signInData: SignInDto) {
+  async signInUser(signInData: SignInRequestDto) {
     const user = await this.authRepository.findOne({
       where: { email: signInData.email, status: 'ACTIVE' },
     });
@@ -52,7 +52,7 @@ export class AuthService {
     return makeResponse(response.SUCCESS, data);
   }
 
-  async signUpUser(signUpData: SignUpDto) {
+  async signUpUser(signUpData: SignUpRequestDto) {
     const securityData = saltHashPassword(signUpData.password);
 
     const user = await this.authRepository.findOne({
