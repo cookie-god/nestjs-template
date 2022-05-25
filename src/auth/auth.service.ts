@@ -23,9 +23,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signInUser(signInData: SignInRequestDto) {
+  async signInUser(signInRequest: SignInRequestDto) {
     const user = await this.authRepository.findOne({
-      where: { email: signInData.email, status: 'ACTIVE' },
+      where: { email: signInRequest.email, status: 'ACTIVE' },
     });
     if (user == undefined) {
       return response.NON_EXIST_EMAIL;
@@ -35,28 +35,30 @@ export class AuthService {
       where: { userId: user.id },
     });
 
-    if (!validatePassword(signInData.password, userSalt.salt, user.password)) {
+    if (
+      !validatePassword(signInRequest.password, userSalt.salt, user.password)
+    ) {
       return response.NON_MATCH_PASSWORD;
     }
 
     const payload = {
       userId: user.id,
-      email: signInData.email,
+      email: signInRequest.email,
     };
     const token = await this.jwtService.sign(payload);
     const data = {
       jwt: token,
-      email: signInData.email,
+      email: signInRequest.email,
     };
 
     return makeResponse(response.SUCCESS, data);
   }
 
-  async signUpUser(signUpData: SignUpRequestDto) {
-    const securityData = saltHashPassword(signUpData.password);
+  async signUpUser(signUpRequest: SignUpRequestDto) {
+    const securityData = saltHashPassword(signUpRequest.password);
 
     const user = await this.authRepository.findOne({
-      where: { email: signUpData.email, status: 'ACTIVE' },
+      where: { email: signUpRequest.email, status: 'ACTIVE' },
     });
 
     if (user != undefined) {
@@ -64,9 +66,9 @@ export class AuthService {
     }
 
     const userInfo = new UserInfo();
-    userInfo.email = signUpData.email;
+    userInfo.email = signUpRequest.email;
     userInfo.password = securityData.hashedPassword;
-    userInfo.nickname = signUpData.nickname;
+    userInfo.nickname = signUpRequest.nickname;
     const createUserData = await this.authRepository.save(userInfo);
 
     const userSalt = new UserSalt();

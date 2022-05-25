@@ -41,8 +41,8 @@ export class AuthController {
   @ApiOperation({ summary: '로그인' })
   @ApiBody({ description: '로그인 DTO', type: SignInRequestDto })
   @Post('sign-in')
-  postSignIn(@SignInUser() signInData: SignInRequestDto) {
-    return this.authService.signInUser(signInData);
+  postSignIn(@SignInUser() signInRequest: SignInRequestDto) {
+    return this.authService.signInUser(signInRequest);
   }
 
   @ApiResponse({
@@ -88,7 +88,7 @@ export class AuthController {
   @ApiOperation({ summary: '회원가입' })
   @ApiBody({ description: '회원가입 DTO', type: SignUpRequestDto })
   @Post('sign-up')
-  postSignUp(@SignUpUser() signUpData: SignUpRequestDto) {
-    return this.authService.signUpUser(signUpData);
+  postSignUp(@SignUpUser() signUpRequest: SignUpRequestDto) {
+    return this.authService.signUpUser(signUpRequest);
   }
 }
