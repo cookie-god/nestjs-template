@@ -3,7 +3,9 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignUpUser, SignInUser } from 'common/decorators/user.decorator';
 import { AuthService } from './auth.service';
 import { SignInRequestDto } from './dto/sign-in-request.dto';
+import { SignInResponseDto } from './dto/sign-in-response.dto';
 import { SignUpRequestDto } from './dto/sign-up-request.dto';
+import { SignUpResponseDto } from './dto/sign-up-response.dto';
 
 @Controller('auth')
 @ApiTags('AUTH')
@@ -13,6 +15,7 @@ export class AuthController {
   @ApiResponse({
     status: 1000,
     description: '성공',
+    type: SignInResponseDto,
   })
   @ApiResponse({
     status: 2004,
@@ -48,6 +51,7 @@ export class AuthController {
   @ApiResponse({
     status: 1000,
     description: '성공',
+    type: SignUpResponseDto,
   })
   @ApiResponse({
     status: 2004,
