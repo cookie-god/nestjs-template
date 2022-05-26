@@ -11,6 +11,14 @@ class SignInResultObject {
   jwt: string;
 
   @ApiProperty({
+    example: 'Master',
+    description: '권한',
+    required: true,
+  })
+  @IsString()
+  authority: string;
+
+  @ApiProperty({
     example: 'email@email.com',
     description: '이메일',
     required: true,

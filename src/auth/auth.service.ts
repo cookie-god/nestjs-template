@@ -44,11 +44,13 @@ export class AuthService {
 
       const payload = {
         userId: user.id,
+        authority: user.authority,
         email: signInRequest.email,
       };
       const token = await this.jwtService.sign(payload);
       const data = {
         jwt: token,
+        authority: user.authority,
         email: signInRequest.email,
       };
 
