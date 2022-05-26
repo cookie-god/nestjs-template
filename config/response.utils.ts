@@ -74,4 +74,19 @@ export const response = {
     code: 2013,
     message: '존재하지 않는 유저입니다.',
   },
+  EMPTY_AUTHORITY: {
+    isSuccess: false,
+    code: 2014,
+    message: '권한을 입력해주세요.',
+  },
+  INVALID_AUTHORITY: {
+    isSuccess: false,
+    code: 2015,
+    message: '유효하지 않은 권한입니다.',
+  },
+  ERROR: {
+    isSuccess: false,
+    code: 4000,
+    message: '서버 에러',
+  },
 };

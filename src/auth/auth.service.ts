@@ -57,31 +57,36 @@ export class AuthService {
   async signUpUser(signUpRequest: SignUpRequestDto) {
     const securityData = saltHashPassword(signUpRequest.password);
 
-    const user = await this.authRepository.findOne({
-      where: { email: signUpRequest.email, status: 'ACTIVE' },
-    });
+    try {
+      const user = await this.authRepository.findOne({
+        where: { email: signUpRequest.email, status: 'ACTIVE' },
+      });
 
-    if (user != undefined) {
-      return response.EXIST_EMAIL;
+      if (user != undefined) {
+        return response.EXIST_EMAIL;
+      }
+
+      const userInfo = new UserInfo();
+      userInfo.email = signUpRequest.email;
+      userInfo.password = securityData.hashedPassword;
+      userInfo.nickname = signUpRequest.nickname;
+      userInfo.authority = signUpRequest.authority;
+      const createUserData = await this.authRepository.save(userInfo);
+
+      const userSalt = new UserSalt();
+      userSalt.salt = securityData.salt;
+      userSalt.userId = createUserData.id;
+      await this.saltRepository.save(userSalt);
+
+      const data = {
+        userId: createUserData.id,
+        email: createUserData.email,
+        nickname: createUserData.nickname,
+      };
+
+      return makeResponse(response.SUCCESS, data);
+    } catch (error) {
+      return response.ERROR;
     }
-
-    const userInfo = new UserInfo();
-    userInfo.email = signUpRequest.email;
-    userInfo.password = securityData.hashedPassword;
-    userInfo.nickname = signUpRequest.nickname;
-    const createUserData = await this.authRepository.save(userInfo);
-
-    const userSalt = new UserSalt();
-    userSalt.salt = securityData.salt;
-    userSalt.userId = createUserData.id;
-    await this.saltRepository.save(userSalt);
-
-    const data = {
-      userId: createUserData.id,
-      email: createUserData.email,
-      nickname: createUserData.nickname,
-    };
-
-    return makeResponse(response.SUCCESS, data);
   }
 }

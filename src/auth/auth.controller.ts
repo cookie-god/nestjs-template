@@ -93,6 +93,14 @@ export class AuthController {
     status: 2012,
     description: '이미 사용중인 이메일입니다.',
   })
+  @ApiResponse({
+    status: 2014,
+    description: '권한을 입력해주세요.',
+  })
+  @ApiResponse({
+    status: 2015,
+    description: '유효하지 않은 권한입니다.',
+  })
   @ApiOperation({ summary: '회원가입' })
   @ApiBody({ description: '회원가입 DTO', type: SignUpRequestDto })
   @Post('sign-up')
