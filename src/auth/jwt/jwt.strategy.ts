@@ -8,7 +8,7 @@ import { secret } from '../../../config/secret';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Payload } from './jwt.payload';
 import { Repository } from 'typeorm';
-import { UserInfo } from 'src/user/entity/userInfo.entity';
+import { UserInfo } from 'src/entity/userInfo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { response } from 'config/response.utils';
 
