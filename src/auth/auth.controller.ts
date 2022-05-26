@@ -18,6 +18,10 @@ export class AuthController {
     type: SignInResponseDto,
   })
   @ApiResponse({
+    status: 2013,
+    description: '존재하지 않는 유저입니다.',
+  })
+  @ApiResponse({
     status: 2004,
     description: '이메일을 입력해주세요.',
   })
