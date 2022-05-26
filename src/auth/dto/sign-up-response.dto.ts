@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsObject, IsString } from 'class-validator';
 
-class ResultObject {
+class SignUpResultObject {
   @ApiProperty({
     example: 1,
     description: '목표',
@@ -57,5 +57,5 @@ export class SignUpResponseDto {
     required: true,
   })
   @IsObject()
-  result: ResultObject;
+  result: SignUpResultObject;
 }

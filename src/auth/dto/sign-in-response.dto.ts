@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsObject, IsString } from 'class-validator';
 
-class ResultObject {
+class SignInResultObject {
   @ApiProperty({
     example: 'JWT 토큰',
     description: 'JWT 토큰',
@@ -49,5 +49,5 @@ export class SignInResponseDto {
     required: true,
   })
   @IsObject()
-  result: ResultObject;
+  result: SignInResultObject;
 }

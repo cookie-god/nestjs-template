@@ -33,4 +33,12 @@ export class SignUpRequestDto {
   })
   @IsString()
   nickname: string;
+
+  @ApiProperty({
+    example: 'Master',
+    description: 'Authority',
+    required: true,
+  })
+  @IsString()
+  authority: string;
 }
