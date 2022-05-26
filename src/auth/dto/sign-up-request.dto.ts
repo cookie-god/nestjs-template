@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class SignUpRequestDto {
   @ApiProperty({
@@ -35,10 +35,10 @@ export class SignUpRequestDto {
   nickname: string;
 
   @ApiProperty({
-    example: 'Master',
+    example: 1,
     description: 'Authority',
     required: true,
   })
-  @IsString()
-  authority: string;
+  @IsNumber()
+  authority: number;
 }

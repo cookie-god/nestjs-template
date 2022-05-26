@@ -14,8 +14,8 @@ export class UserInfo {
   @Column({ length: 10 })
   nickname: string;
 
-  @Column({ length: 10, nullable: false })
-  authority: string;
+  @Column()
+  authority: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: string;
