@@ -24,34 +24,38 @@ export class AuthService {
   ) {}
 
   async signInUser(signInRequest: SignInRequestDto) {
-    const user = await this.authRepository.findOne({
-      where: { email: signInRequest.email, status: 'ACTIVE' },
-    });
-    if (user == undefined) {
-      return response.NON_EXIST_EMAIL;
+    try {
+      const user = await this.authRepository.findOne({
+        where: { email: signInRequest.email, status: 'ACTIVE' },
+      });
+      if (user == undefined) {
+        return response.NON_EXIST_EMAIL;
+      }
+
+      const userSalt = await this.saltRepository.findOne({
+        where: { userId: user.id },
+      });
+
+      if (
+        !validatePassword(signInRequest.password, userSalt.salt, user.password)
+      ) {
+        return response.NON_MATCH_PASSWORD;
+      }
+
+      const payload = {
+        userId: user.id,
+        email: signInRequest.email,
+      };
+      const token = await this.jwtService.sign(payload);
+      const data = {
+        jwt: token,
+        email: signInRequest.email,
+      };
+
+      return makeResponse(response.SUCCESS, data);
+    } catch (error) {
+      return response.ERROR;
     }
-
-    const userSalt = await this.saltRepository.findOne({
-      where: { userId: user.id },
-    });
-
-    if (
-      !validatePassword(signInRequest.password, userSalt.salt, user.password)
-    ) {
-      return response.NON_MATCH_PASSWORD;
-    }
-
-    const payload = {
-      userId: user.id,
-      email: signInRequest.email,
-    };
-    const token = await this.jwtService.sign(payload);
-    const data = {
-      jwt: token,
-      email: signInRequest.email,
-    };
-
-    return makeResponse(response.SUCCESS, data);
   }
 
   async signUpUser(signUpRequest: SignUpRequestDto) {

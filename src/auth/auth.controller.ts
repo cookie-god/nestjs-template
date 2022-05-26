@@ -45,6 +45,10 @@ export class AuthController {
     status: 2003,
     description: '비밀번호가 일치하지 않습니다.',
   })
+  @ApiResponse({
+    status: 4000,
+    description: '서버 에러',
+  })
   @ApiOperation({ summary: '로그인' })
   @ApiBody({ description: '로그인 DTO', type: SignInRequestDto })
   @Post('sign-in')
@@ -100,6 +104,10 @@ export class AuthController {
   @ApiResponse({
     status: 2015,
     description: '유효하지 않은 권한입니다.',
+  })
+  @ApiResponse({
+    status: 4000,
+    description: '서버 에러',
   })
   @ApiOperation({ summary: '회원가입' })
   @ApiBody({ description: '회원가입 DTO', type: SignUpRequestDto })
