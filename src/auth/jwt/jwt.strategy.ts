@@ -30,6 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       where: { id: payload.userId, status: 'ACTIVE' },
     });
     if (user == undefined) {
+      console.log(payload.userId);
       throw new HttpException(response.NON_EXIST_USER, 201);
     }
     return user;

@@ -42,6 +42,7 @@ export class AuthService {
         return response.NON_MATCH_PASSWORD;
       }
 
+      console.log(user.id);
       const payload = {
         userId: user.id,
         authority: user.authority,
