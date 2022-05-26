@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { regularExp } from 'config/regularExp';
 import { response } from 'config/response.utils';
-import { Authority } from 'config/secret';
 
 export const SignInUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
@@ -55,15 +54,6 @@ export const SignUpUser = createParamDecorator(
     }
     if (!body.authority) {
       throw new HttpException(response.EMPTY_AUTHORITY, 201);
-    }
-    if (
-      body.authority !== Authority.Master &&
-      body.authority !== Authority.Consultant &&
-      body.authority !== Authority.PM &&
-      body.authority !== Authority.Marker &&
-      body.authority !== Authority.Normal
-    ) {
-      throw new HttpException(response.INVALID_AUTHORITY, 201);
     }
     return body;
   },

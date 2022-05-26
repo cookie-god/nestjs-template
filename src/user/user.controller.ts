@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { checkMasterAuthority, makeResponse } from 'common/function.utils';
+import { makeResponse } from 'common/function.utils';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { response } from '../../config/response.utils';
 
@@ -16,7 +16,6 @@ export class UserController {
   })
   @Get('/v1/master')
   getUsersByMaster(@Request() req) {
-    checkMasterAuthority(req.user.authority);
     return makeResponse(response.SUCCESS, undefined);
   }
 
