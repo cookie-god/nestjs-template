@@ -12,6 +12,7 @@ import {
   saltHashPassword,
   validatePassword,
 } from '../../config/security.utils';
+import { Authority } from 'src/entity/authority.entity';
 
 @Injectable()
 export class AuthService {
@@ -20,6 +21,8 @@ export class AuthService {
     private readonly authRepository: Repository<UserInfo>,
     @InjectRepository(UserSalt)
     private readonly saltRepository: Repository<UserSalt>,
+    @InjectRepository(Authority)
+    private readonly authorityRepository: Repository<Authority>,
     private jwtService: JwtService,
   ) {}
 
@@ -65,14 +68,26 @@ export class AuthService {
     const securityData = saltHashPassword(signUpRequest.password);
 
     try {
+      // 가입한 이메일이 존재하는지 체크
       const user = await this.authRepository.findOne({
         where: { email: signUpRequest.email, status: 'ACTIVE' },
       });
 
+      // user 정보가 있는지 체크
       if (user != undefined) {
         return response.EXIST_EMAIL;
       }
 
+      // 존재하는 권한 아이디인지 체크
+      const isExistAuthorityId = await this.authorityRepository.count({
+        where: { id: signUpRequest.authority },
+      });
+
+      if (isExistAuthorityId === 0) {
+        return response.INVALID_AUTHORITY;
+      }
+
+      // UserInfo 인스턴스 생성후, 정보 담는 부분
       const userInfo = new UserInfo();
       userInfo.email = signUpRequest.email;
       userInfo.password = securityData.hashedPassword;

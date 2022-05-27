@@ -8,6 +8,7 @@ import { response } from '../../config/response.utils';
 @ApiTags('Users')
 export class UserController {
   @UseGuards(JwtAuthGuard)
+  // @ApiAuthorityCheck(['Master', 'Consultant', 'PM'])
   @ApiOperation({ summary: '마스터 유저 조회' })
   @ApiHeader({
     description: 'jwt token',
@@ -19,6 +20,7 @@ export class UserController {
     return makeResponse(response.SUCCESS, undefined);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/v1/consultant')
   getUsersByConsultant() {
     return response.SUCCESS;
