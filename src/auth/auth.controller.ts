@@ -12,6 +12,11 @@ import { SignUpResponseDto } from './dto/sign-up-response.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  /**
+   * description : 로그인 API
+   * @param SignInRequest
+   * @returns SignInResponse
+   */
   @ApiResponse({
     status: 1000,
     description: '성공',
@@ -56,6 +61,11 @@ export class AuthController {
     return this.authService.signInUser(signInRequest);
   }
 
+  /**
+   * description : 회원가입 API
+   * @param SignUpRequest
+   * @returns SignUpResponse
+   */
   @ApiResponse({
     status: 1000,
     description: '성공',
