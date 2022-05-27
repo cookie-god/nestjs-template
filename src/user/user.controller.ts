@@ -16,7 +16,7 @@ export class UserController {
     example: 'JWT TOKEN',
   })
   @Get('/v1/master')
-  getUsersByMaster(@Request() req) {
+  getUsersByMaster() {
     return makeResponse(response.SUCCESS, undefined);
   }
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignUpUser, SignInUser } from 'common/decorators/user.decorator';
 import { AuthService } from './auth.service';
@@ -49,6 +49,10 @@ export class AuthController {
   @ApiResponse({
     status: 2003,
     description: '비밀번호가 일치하지 않습니다.',
+  })
+  @ApiResponse({
+    status: 2015,
+    description: '유효하지 않은 권한입니다.',
   })
   @ApiResponse({
     status: 4000,

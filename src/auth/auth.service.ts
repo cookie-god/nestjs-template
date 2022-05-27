@@ -50,10 +50,20 @@ export class AuthService {
         return response.NON_MATCH_PASSWORD;
       }
 
+      // 유저의 권한값 추출
+      const authority = await this.authorityRepository.findOne({
+        where: { id: user.authority, status: 'ACTIVE' },
+      });
+
+      // 존재하지 않는 권한인 경우
+      if (authority == undefined) {
+        return response.INVALID_AUTHORITY;
+      }
+
       //payload값 생성
       const payload = {
         userId: user.id,
-        authority: user.authority,
+        authority: authority.type,
         email: signInRequest.email,
       };
 
@@ -63,7 +73,7 @@ export class AuthService {
       // Response의 result 객체에 Data를 담는 부분
       const data = {
         jwt: token,
-        authority: user.authority,
+        authority: authority.type,
         email: signInRequest.email,
       };
 
