@@ -1,7 +1,7 @@
-import { LoggerService as LS } from "@nestjs/common";
-import { utilities as nestWinstonModuleUtilities } from "nest-winston";
-import * as winston from "winston";
-import * as moment from "moment";
+import { LoggerService as LS } from '@nestjs/common';
+import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
+import * as winston from 'winston';
+import * as moment from 'moment';
 
 const { errors, combine, json, timestamp, ms, prettyPrint } = winston.format;
 
@@ -13,28 +13,28 @@ export class LoggerService implements LS {
       format: combine(
         errors({ stack: true }),
         json(),
-        timestamp({ format: "isoDateTime" }),
+        timestamp({ format: 'isoDateTime' }),
         ms(),
-        prettyPrint()
+        prettyPrint(),
       ),
       defaultMeta: { service },
       transports: [
         new winston.transports.File({
-          level: "error",
-          filename: `error-${moment(new Date()).format("YYYY-MM-DD")}.log`,
-          dirname: "logs",
+          level: 'error',
+          filename: `error-${moment(new Date()).format('YYYY-MM-DD')}.log`,
+          dirname: 'logs',
           maxsize: 5000000,
         }),
         new winston.transports.Console({
-          level: "debug",
+          level: 'debug',
           format: combine(nestWinstonModuleUtilities.format.nestLike()),
         }),
 
         new winston.transports.File({
           filename: `application-${moment(new Date()).format(
-            "YYYY-MM-DD"
+            'YYYY-MM-DD',
           )}.log`,
-          dirname: "logs",
+          dirname: 'logs',
           maxsize: 5000000,
         }),
       ],

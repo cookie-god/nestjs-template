@@ -69,7 +69,6 @@ export class AuthService {
         email: signInRequest.email,
       };
 
-      console.log(payload.authority);
       //토큰 생성
       const token = await this.jwtService.sign(payload);
 
