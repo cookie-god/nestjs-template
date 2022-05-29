@@ -3,7 +3,7 @@ import { IsArray, IsNumber, IsString } from 'class-validator';
 import { BaseResponse } from 'config/base.response';
 
 // user 객체 리스트 정보
-export abstract class GetUsersResponseDataDetail {
+export abstract class AdminGetUsersResponseDataDetail {
   @ApiProperty({
     example: 1,
     description: '유저 아이디',
@@ -13,7 +13,7 @@ export abstract class GetUsersResponseDataDetail {
   id: number;
 
   @ApiProperty({
-    example: 'email@email.com',
+    example: 'user@email.com',
     description: '이메일',
     required: true,
   })
@@ -21,12 +21,12 @@ export abstract class GetUsersResponseDataDetail {
   email: string;
 
   @ApiProperty({
-    example: 'Master',
-    description: '권한 (PM, Consultant는 조회 불가능)',
+    example: '쿠키',
+    description: '닉네임 (PM, Consultant는 조회 불가능)',
     required: false,
   })
   @IsString()
-  authority: string;
+  nickname: string;
 
   @ApiProperty({
     example: '2022-05-27T02:06:44.000Z',
@@ -46,23 +46,23 @@ export abstract class GetUsersResponseDataDetail {
 }
 
 // result 객체 정보
-export abstract class GetUsersResponseData {
+export abstract class AdminGetUsersResponseData {
   @ApiProperty({
     description: 'user 객체 리스트',
-    type: GetUsersResponseDataDetail,
+    type: AdminGetUsersResponseDataDetail,
     required: true,
     isArray: true,
   })
   @IsArray()
-  users: Array<GetUsersResponseDataDetail>;
+  users: Array<AdminGetUsersResponseDataDetail>;
 }
 
 // response 객체
-export abstract class GetUsersResponse extends BaseResponse {
+export abstract class AdminGetUsersResponse extends BaseResponse {
   @ApiProperty({
     description: 'result 객체',
     required: true,
   })
   @IsArray()
-  result: GetUsersResponseData;
+  result: AdminGetUsersResponseData;
 }

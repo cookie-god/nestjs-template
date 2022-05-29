@@ -3,7 +3,6 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './Web/user/user.module';
 import { AuthModule } from './Web/auth/auth.module';
 import { AdminUserModule } from './Admin/user/user.module';
 import { AdminAuthModule } from './Admin/auth/auth.module';
@@ -22,7 +21,6 @@ import { AdminAuthModule } from './Admin/auth/auth.module';
       bigNumberStrings: false,
       charset: 'utf8mb4',
     }),
-    UserModule,
     AuthModule,
     AdminUserModule,
     AdminAuthModule,

@@ -5,14 +5,14 @@ import { BaseResponse } from 'config/base.response';
 class SignUpResultData {
   @ApiProperty({
     example: 1,
-    description: '목표',
+    description: '유저 아이디',
     required: true,
   })
   @IsNumber()
   userId: number;
 
   @ApiProperty({
-    example: 'email@email.com',
+    example: 'user@email.com',
     description: '이메일',
     required: true,
   })

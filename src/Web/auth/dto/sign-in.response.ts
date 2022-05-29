@@ -20,7 +20,7 @@ class SignInResponseData {
   userId: number;
 
   @ApiProperty({
-    example: 'email@email.com',
+    example: 'user@email.com',
     description: '이메일',
     required: true,
   })

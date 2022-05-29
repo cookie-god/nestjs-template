@@ -3,7 +3,7 @@ import { IsString } from 'class-validator';
 
 export class SignUpRequest {
   @ApiProperty({
-    example: 'email@email.com',
+    example: 'user@email.com',
     description: 'email',
     required: true,
   })
@@ -11,7 +11,7 @@ export class SignUpRequest {
   email: string;
 
   @ApiProperty({
-    example: 'cookie1234',
+    example: 'user1234',
     description: 'password',
     required: true,
   })
@@ -19,7 +19,7 @@ export class SignUpRequest {
   password: string;
 
   @ApiProperty({
-    example: 'cookie1234',
+    example: 'user1234',
     description: 'confirm password',
     required: true,
   })

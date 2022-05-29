@@ -3,7 +3,7 @@ import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiAuthorityCheck } from 'common/function.utils';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { response } from '../../../config/response.utils';
-import { GetUsersResponse } from './dto/get-users.response';
+import { AdminGetUsersResponse } from './dto/admin-get-users.response';
 import { UserService } from './user.service';
 
 @Controller('admin/users')
@@ -26,7 +26,7 @@ export class UserController {
   @ApiResponse({
     status: 1000,
     description: '성공',
-    type: GetUsersResponse,
+    type: AdminGetUsersResponse,
   })
   @ApiResponse({
     status: 2013,
