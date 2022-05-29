@@ -3,10 +3,13 @@ import { ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiAuthorityCheck, makeResponse } from 'common/function.utils';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { response } from '../../config/response.utils';
+import { UserService } from './user.service';
 
 @Controller('users')
 @ApiTags('Users')
 export class UserController {
+  constructor(private readonly userService: UserService) {}
+
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '유저 조회' })
   @ApiHeader({
@@ -21,6 +24,6 @@ export class UserController {
     ) {
       return response.CANNOT_ACCESS_BY_AUTHORITY;
     }
-    return makeResponse(response.SUCCESS, undefined);
+    return this.userService.retrieveUsers(req.user.authority);
   }
 }
