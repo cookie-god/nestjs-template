@@ -8,7 +8,7 @@ import { UserSalt } from 'src/entity/userSalt.entity';
 import { Connection, Repository } from 'typeorm';
 import { SignInRequest } from './dto/sign-in.request';
 import { SignUpRequest } from './dto/sign-up.request';
-import { Payload } from './jwt/jwt.payload';
+import { Payload } from '../../config/jwt/jwt.payload';
 import {
   saltHashPassword,
   validatePassword,
