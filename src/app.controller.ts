@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
-import { JwtAuthGuard } from '../config/jwt/jwt.guard';
 
 @Controller()
 export class AppController {
