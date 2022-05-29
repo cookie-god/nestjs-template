@@ -27,7 +27,6 @@ export class UserController {
     status: 1000,
     description: '성공',
     type: GetUsersResponse,
-    isArray: true,
   })
   @ApiResponse({
     status: 2013,
