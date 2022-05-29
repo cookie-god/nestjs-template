@@ -173,13 +173,17 @@ Nest is [MIT licensed](LICENSE).
 ## 실행 명령어
 
 ```
-Nodemon (로컬 작업)
-시작 명령어: nodemon index.js
+로컬에서 작업시 서버 실행
+start: npm run start
+watch-start : npm run start:dev -> 추천드립니다.
 
 
-PM2 (개발 서버, 실 서버)
-시작 명령어: pm2 start app.js --name "example"
-재시작 명령어: pm2 restart "example"
-종료 명령어: pm2 stop "example"
+PM2 (실 서버)
+시작 명령어
+1. dist 폴더가 있으면 제거
+2. git pull
+3. npm run start를 통해 dist 폴더 생성
+4. npm run start:prod
+종료 명령어: pm2 stop main
 
 ```
