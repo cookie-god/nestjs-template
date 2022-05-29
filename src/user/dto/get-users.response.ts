@@ -2,7 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNumber, IsString } from 'class-validator';
 import { BaseResponse } from 'config/base.response';
 
-export abstract class GetUsersResponseData {
+// user 객체 리스트 정보
+export abstract class GetUsersResponseDataDetail {
   @ApiProperty({
     example: 1,
     description: '유저 아이디',
@@ -52,9 +53,22 @@ export abstract class GetUsersResponseData {
   status: string;
 }
 
+// result 객체 정보
+export abstract class GetUsersResponseData {
+  @ApiProperty({
+    description: 'user 객체 리스트',
+    type: GetUsersResponseDataDetail,
+    required: true,
+    isArray: true,
+  })
+  @IsArray()
+  users: Array<GetUsersResponseDataDetail>;
+}
+
+// response 객체
 export abstract class GetUsersResponse extends BaseResponse {
   @ApiProperty({
-    description: 'result 객체 리스트',
+    description: 'result 객체',
     required: true,
   })
   @IsArray()

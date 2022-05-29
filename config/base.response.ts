@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
+// 기본적인 response 구조
 export abstract class BaseResponse {
   @ApiProperty({
     example: true,
