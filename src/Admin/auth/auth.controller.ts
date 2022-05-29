@@ -7,8 +7,8 @@ import { SignInResponse } from './dto/sign-in.response';
 import { SignUpRequest } from './dto/sign-up.request';
 import { SignUpResponse } from './dto/sign-up.response';
 
-@Controller('auth')
-@ApiTags('AUTH')
+@Controller('admin/auth')
+@ApiTags('Admin Auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

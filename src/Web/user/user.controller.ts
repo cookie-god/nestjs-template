@@ -2,12 +2,12 @@ import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiAuthorityCheck } from 'common/function.utils';
 import { JwtAuthGuard } from 'config/jwt/jwt.guard';
-import { response } from '../../config/response.utils';
+import { response } from '../../../config/response.utils';
 import { GetUsersResponse } from './dto/get-users.response';
 import { UserService } from './user.service';
 
-@Controller('users')
-@ApiTags('Users')
+@Controller('/web/users')
+@ApiTags('Web Users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

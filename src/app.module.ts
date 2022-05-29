@@ -3,8 +3,10 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
+import { UserModule } from './Web/user/user.module';
+import { AuthModule } from './Web/auth/auth.module';
+import { AdminUserModule } from './Admin/user/user.module';
+import { AdminAuthModule } from './Admin/auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    AdminUserModule,
+    AdminAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

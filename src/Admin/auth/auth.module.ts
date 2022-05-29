@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { secret } from '../../config/secret';
+import { secret } from '../../../config/secret';
 import { UserInfo } from 'src/entity/userInfo.entity';
 import { UserSalt } from 'src/entity/userSalt.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from '../../config/jwt/jwt.strategy';
+import { JwtStrategy } from '../../../config/jwt/jwt.strategy';
 import { Authority } from 'src/entity/authority.entity';
 
 @Module({
@@ -20,4 +20,4 @@ import { Authority } from 'src/entity/authority.entity';
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
 })
-export class AuthModule {}
+export class AdminAuthModule {}
