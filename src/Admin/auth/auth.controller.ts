@@ -1,11 +1,14 @@
 import { Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SignUpUser, SignInUser } from 'common/decorators/user.decorator';
+import {
+  SignUpUser,
+  SignInUser,
+} from '../../../common/decorators/user.decorator';
 import { AuthService } from './auth.service';
-import { SignInRequest } from './dto/sign-in.request';
-import { SignInResponse } from './dto/sign-in.response';
-import { SignUpRequest } from './dto/sign-up.request';
-import { SignUpResponse } from './dto/sign-up.response';
+import { AdminSignInRequest } from './dto/admin-sign-in.request';
+import { AdminSignInResponse } from './dto/admin-sign-in.response';
+import { AdminSignUpRequest } from './dto/admin-sign-up.request';
+import { AdminSignUpResponse } from './dto/admin-sign-up.response';
 
 @Controller('admin/auth')
 @ApiTags('Admin Auth')
@@ -20,7 +23,7 @@ export class AuthController {
   @ApiResponse({
     status: 1000,
     description: '성공',
-    type: SignInResponse,
+    type: AdminSignInResponse,
   })
   @ApiResponse({
     status: 2013,
@@ -59,9 +62,9 @@ export class AuthController {
     description: '서버 에러',
   })
   @ApiOperation({ summary: '로그인' })
-  @ApiBody({ description: '로그인 DTO', type: SignInRequest })
+  @ApiBody({ description: '로그인 DTO', type: AdminSignInRequest })
   @Post('sign-in')
-  postSignIn(@SignInUser() signInRequest: SignInRequest) {
+  postSignIn(@SignInUser() signInRequest: AdminSignInRequest) {
     return this.authService.signInUser(signInRequest);
   }
 
@@ -73,7 +76,7 @@ export class AuthController {
   @ApiResponse({
     status: 1000,
     description: '성공',
-    type: SignUpResponse,
+    type: AdminSignUpResponse,
   })
   @ApiResponse({
     status: 2004,
@@ -120,9 +123,9 @@ export class AuthController {
     description: '서버 에러',
   })
   @ApiOperation({ summary: '회원가입' })
-  @ApiBody({ description: '회원가입 DTO', type: SignUpRequest })
+  @ApiBody({ description: '회원가입 DTO', type: AdminSignUpRequest })
   @Post('sign-up')
-  postSignUp(@SignUpUser() signUpRequest: SignUpRequest) {
+  postSignUp(@SignUpUser() signUpRequest: AdminSignUpRequest) {
     return this.authService.signUpUser(signUpRequest);
   }
 }

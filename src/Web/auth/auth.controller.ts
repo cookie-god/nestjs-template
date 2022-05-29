@@ -1,6 +1,9 @@
 import { Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SignUpUser, SignInUser } from 'common/decorators/user.decorator';
+import {
+  SignUpUser,
+  SignInUser,
+} from '../../../common/decorators/user.decorator';
 import { AuthService } from './auth.service';
 import { SignInRequest } from './dto/sign-in.request';
 import { SignInResponse } from './dto/sign-in.response';
@@ -106,10 +109,6 @@ export class AuthController {
   @ApiResponse({
     status: 2012,
     description: '이미 사용중인 이메일입니다.',
-  })
-  @ApiResponse({
-    status: 2014,
-    description: '권한을 입력해주세요.',
   })
   @ApiResponse({
     status: 2015,

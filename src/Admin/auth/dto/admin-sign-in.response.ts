@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNumber, IsString } from 'class-validator';
 import { BaseResponse } from 'config/base.response';
 
-class SignInResponseData {
+class AdminSignInResponseData {
   @ApiProperty({
     example: 'JWT 토큰',
     description: 'JWT 토큰',
@@ -28,11 +28,11 @@ class SignInResponseData {
   authority: string;
 }
 
-export abstract class SignInResponse extends BaseResponse {
+export abstract class AdminSignInResponse extends BaseResponse {
   @ApiProperty({
     description: 'result 객체',
     required: true,
   })
   @IsArray()
-  result: SignInResponseData;
+  result: AdminSignInResponseData;
 }

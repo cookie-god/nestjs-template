@@ -3,11 +3,11 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { makeResponse } from 'common/function.utils';
 import { response } from 'config/response.utils';
-import { AdminInfo } from 'src/entity/adminInfo.entity';
-import { AdminSalt } from 'src/entity/adminSalt.entity';
+import { AdminInfo } from 'src/entity/admin-info.entity';
+import { AdminSalt } from 'src/entity/admin-salt.entity';
 import { Connection, Repository } from 'typeorm';
-import { SignInRequest } from './dto/sign-in.request';
-import { SignUpRequest } from './dto/sign-up.request';
+import { AdminSignInRequest } from './dto/admin-sign-in.request';
+import { AdminSignUpRequest } from './dto/admin-sign-up.request';
 import { Payload } from './jwt/jwt.payload';
 import {
   saltHashPassword,
@@ -28,7 +28,7 @@ export class AuthService {
     private connection: Connection,
   ) {}
 
-  async signInUser(signInRequest: SignInRequest) {
+  async signInUser(signInRequest: AdminSignInRequest) {
     try {
       // 입력한 이메일에 해당하는 유저값 추출
       const admin = await this.adminRepository.findOne({
@@ -89,7 +89,7 @@ export class AuthService {
     }
   }
 
-  async signUpUser(signUpRequest: SignUpRequest) {
+  async signUpUser(signUpRequest: AdminSignUpRequest) {
     const securityData = saltHashPassword(signUpRequest.password);
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();

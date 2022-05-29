@@ -4,15 +4,15 @@ import { secret } from '../../../../config/secret';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Payload } from './jwt.payload';
 import { Repository } from 'typeorm';
-import { AdminInfo } from 'src/entity/adminInfo.entity';
+import { UserInfo } from 'src/entity/user-info.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { response } from 'config/response.utils';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(AdminInfo)
-    private readonly adminRepository: Repository<AdminInfo>,
+    @InjectRepository(UserInfo)
+    private readonly adminRepository: Repository<UserInfo>,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromHeader('x-access-token'),

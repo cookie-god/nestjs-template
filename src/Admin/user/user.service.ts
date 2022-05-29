@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { makeResponse } from 'common/function.utils';
 import { response } from 'config/response.utils';
 import { Authority } from 'src/entity/authority.entity';
-import { AdminInfo } from 'src/entity/adminInfo.entity';
+import { AdminInfo } from 'src/entity/admin-info.entity';
 import { getManager, Repository } from 'typeorm';
 
 @Injectable()

@@ -50,9 +50,6 @@ export const SignUpUser = createParamDecorator(
     if (body.password !== body.confirmPassword) {
       throw new HttpException(response.NOT_MATCH_CONFIRM_PASSWORD, 201);
     }
-    if (!body.authority) {
-      throw new HttpException(response.EMPTY_AUTHORITY, 201);
-    }
     return body;
   },
 );

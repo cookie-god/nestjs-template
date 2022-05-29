@@ -13,11 +13,11 @@ class SignInResponseData {
 
   @ApiProperty({
     example: 1,
-    description: '어드민 아이디',
+    description: '유저 아이디',
     required: true,
   })
   @IsNumber()
-  adminId: number;
+  userId: number;
 
   @ApiProperty({
     example: 'email@email.com',
