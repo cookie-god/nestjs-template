@@ -6,7 +6,7 @@ import {
 import { regularExp } from 'config/regularExp';
 import { response } from 'config/response.utils';
 
-// User관련 데코레이터
+// Auth관련 데코레이터
 export const SignInUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const body = ctx.switchToHttp().getRequest().body;
@@ -49,6 +49,9 @@ export const SignUpUser = createParamDecorator(
     }
     if (body.password !== body.confirmPassword) {
       throw new HttpException(response.NOT_MATCH_CONFIRM_PASSWORD, 201);
+    }
+    if (!body.authority) {
+      throw new HttpException(response.EMPTY_AUTHORITY, 201);
     }
     return body;
   },

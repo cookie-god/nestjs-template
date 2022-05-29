@@ -89,6 +89,11 @@ export const response = {
     code: 2016,
     message: '접근이 불가능한 권한입니다.',
   },
+  INVALID_NICKNAME: {
+    isSuccess: false,
+    code: 2017,
+    message: '닉네임이 20자를 초과합니다.',
+  },
   ERROR: {
     isSuccess: false,
     code: 4000,

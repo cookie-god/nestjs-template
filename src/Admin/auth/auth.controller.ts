@@ -1,9 +1,6 @@
 import { Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import {
-  SignUpUser,
-  SignInUser,
-} from '../../../common/decorators/user.decorator';
+import { SignUpUser, SignInUser } from '../decorators/auth.decorator';
 import { AuthService } from './auth.service';
 import { AdminSignInRequest } from './dto/admin-sign-in.request';
 import { AdminSignInResponse } from './dto/admin-sign-in.response';
@@ -17,8 +14,8 @@ export class AuthController {
 
   /**
    * description : 로그인 API
-   * @param SignInRequest
-   * @returns SignInResponse
+   * @param AdminSignInRequest
+   * @returns AdminSignInResponse
    */
   @ApiResponse({
     status: 1000,
@@ -70,8 +67,8 @@ export class AuthController {
 
   /**
    * description : 회원가입 API
-   * @param SignUpRequest
-   * @returns SignUpResponse
+   * @param AdminSignUpRequest
+   * @returns AdminSignUpResponse
    */
   @ApiResponse({
     status: 1000,
