@@ -18,14 +18,6 @@ class SignUpResultData {
   })
   @IsString()
   email: string;
-
-  @ApiProperty({
-    example: '쿠키',
-    description: '닉네임',
-    required: true,
-  })
-  @IsString()
-  nickname: string;
 }
 
 export abstract class SignUpResponse extends BaseResponse {

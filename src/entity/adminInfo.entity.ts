@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class UserInfo {
+export class AdminInfo {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -10,9 +10,6 @@ export class UserInfo {
 
   @Column({ length: 256 })
   password: string;
-
-  @Column({ length: 10 })
-  nickname: string;
 
   @Column()
   authority: number;

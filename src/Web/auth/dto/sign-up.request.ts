@@ -27,14 +27,6 @@ export class SignUpRequest {
   confirmPassword: string;
 
   @ApiProperty({
-    example: '쿠키',
-    description: 'nickname',
-    required: true,
-  })
-  @IsString()
-  nickname: string;
-
-  @ApiProperty({
     example: 1,
     description: 'Authority',
     required: true,

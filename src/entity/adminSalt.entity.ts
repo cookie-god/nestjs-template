@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class UserSalt {
+export class AdminSalt {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -9,5 +9,5 @@ export class UserSalt {
   salt: string;
 
   @Column()
-  userId: number;
+  adminId: number;
 }

@@ -21,14 +21,6 @@ export abstract class GetUsersResponseDataDetail {
   email: string;
 
   @ApiProperty({
-    example: '쿠키',
-    description: '닉네임 (PM은 조회 불가능)',
-    required: false,
-  })
-  @IsString()
-  nickname: string;
-
-  @ApiProperty({
     example: 'Master',
     description: '권한 (PM, Consultant는 조회 불가능)',
     required: false,

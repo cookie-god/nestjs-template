@@ -104,10 +104,6 @@ export class AuthController {
     description: '확인 비밀번호와 일치하지 않습니다.',
   })
   @ApiResponse({
-    status: 2011,
-    description: '닉네임을 입력해주세요.',
-  })
-  @ApiResponse({
     status: 2012,
     description: '이미 사용중인 이메일입니다.',
   })

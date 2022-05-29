@@ -3,14 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { makeResponse } from 'common/function.utils';
 import { response } from 'config/response.utils';
 import { Authority } from 'src/entity/authority.entity';
-import { UserInfo } from 'src/entity/userInfo.entity';
+import { AdminInfo } from 'src/entity/adminInfo.entity';
 import { getManager, Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserInfo)
-    private readonly userRepository: Repository<UserInfo>,
+    @InjectRepository(AdminInfo)
+    private readonly adminRepository: Repository<AdminInfo>,
     @InjectRepository(Authority)
     private readonly authorityRepository: Repository<Authority>,
   ) {}
@@ -21,11 +21,10 @@ export class UserService {
       // Master/Consultant,PM 유저인 경우
       if (authority === 'Master') {
         users = await getManager()
-          .createQueryBuilder(UserInfo, 'user')
+          .createQueryBuilder(AdminInfo, 'user')
           .select([
             'user.id',
             'user.email',
-            'user.nickname',
             'user.authority',
             'user.createdAt',
             'user.status',
@@ -33,18 +32,12 @@ export class UserService {
           .getMany();
       } else if (authority == 'Consultant') {
         users = await getManager()
-          .createQueryBuilder(UserInfo, 'user')
-          .select([
-            'user.id',
-            'user.email',
-            'user.nickname',
-            'user.createdAt',
-            'user.status',
-          ])
+          .createQueryBuilder(AdminInfo, 'user')
+          .select(['user.id', 'user.email', 'user.createdAt', 'user.status'])
           .getMany();
       } else {
         users = await getManager()
-          .createQueryBuilder(UserInfo, 'user')
+          .createQueryBuilder(AdminInfo, 'user')
           .select(['user.id', 'user.email', 'user.createdAt', 'user.status'])
           .getMany();
       }

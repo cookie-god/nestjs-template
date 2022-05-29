@@ -4,15 +4,15 @@ import { secret } from '../secret';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Payload } from './jwt.payload';
 import { Repository } from 'typeorm';
-import { UserInfo } from 'src/entity/userInfo.entity';
+import { AdminInfo } from 'src/entity/adminInfo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { response } from 'config/response.utils';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(UserInfo)
-    private readonly authRepository: Repository<UserInfo>,
+    @InjectRepository(AdminInfo)
+    private readonly adminRepository: Repository<AdminInfo>,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromHeader('x-access-token'),
@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: Payload) {
     // User 정보 추출
-    const user = await this.authRepository.findOne({
+    const user = await this.adminRepository.findOne({
       where: { id: payload.userId, status: 'ACTIVE' },
     });
     // 유저가 존재하지 않는 경우
