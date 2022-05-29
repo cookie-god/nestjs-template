@@ -11,6 +11,11 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  /**
+   * description : 권한별 유저 조회 API
+   * @param non-exsit
+   * @returns GetUsersResponse
+   */
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '유저 조회 (객체 리스트 리턴)' })
   @ApiHeader({
