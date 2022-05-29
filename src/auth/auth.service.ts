@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, PayloadTooLargeException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { makeResponse } from 'common/function.utils';
@@ -8,6 +8,7 @@ import { UserSalt } from 'src/entity/userSalt.entity';
 import { Repository } from 'typeorm';
 import { SignInRequestDto } from './dto/sign-in-request.dto';
 import { SignUpRequestDto } from './dto/sign-up-request.dto';
+import { Payload } from './jwt/jwt.payload';
 import {
   saltHashPassword,
   validatePassword,
@@ -61,12 +62,14 @@ export class AuthService {
       }
 
       //payload값 생성
-      const payload = {
+
+      const payload: Payload = {
         userId: user.id,
         authority: authority.type,
         email: signInRequest.email,
       };
 
+      console.log(payload.authority);
       //토큰 생성
       const token = await this.jwtService.sign(payload);
 

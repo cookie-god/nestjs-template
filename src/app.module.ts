@@ -31,6 +31,6 @@ import { UserController } from './user/user.controller';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes(AuthController, UserController);
+    consumer.apply(LoggerMiddleware).forRoutes(AuthController);
   }
 }

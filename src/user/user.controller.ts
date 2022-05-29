@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { makeResponse } from 'common/function.utils';
+import { ApiAuthorityCheck, makeResponse } from 'common/function.utils';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { response } from '../../config/response.utils';
 
@@ -8,31 +8,19 @@ import { response } from '../../config/response.utils';
 @ApiTags('Users')
 export class UserController {
   @UseGuards(JwtAuthGuard)
-  // @ApiAuthorityCheck(['Master', 'Consultant', 'PM'])
-  @ApiOperation({ summary: '마스터 유저 조회' })
+  @ApiOperation({ summary: '유저 조회' })
   @ApiHeader({
     description: 'jwt token',
     name: 'x-access-token',
     example: 'JWT TOKEN',
   })
-  @Get('/v1/master')
-  getUsersByMaster() {
+  @Get('/v1')
+  getUsersByMaster(@Request() req) {
+    if (
+      !ApiAuthorityCheck(req.user.authority, ['Master', 'Consultant', 'PM'])
+    ) {
+      return response.CANNOT_ACCESS_BY_AUTHORITY;
+    }
     return makeResponse(response.SUCCESS, undefined);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('/v1/consultant')
-  getUsersByConsultant() {
-    return response.SUCCESS;
-  }
-
-  @Get('/v1/pm')
-  getUsersByPm() {
-    return response.SUCCESS;
-  }
-
-  @Get('/v1/marker')
-  getUsersByMarker() {
-    return response.SUCCESS;
   }
 }

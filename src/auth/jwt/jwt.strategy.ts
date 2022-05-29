@@ -31,6 +31,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (user == undefined) {
       throw new HttpException(response.NON_EXIST_USER, 201);
     }
-    return user;
+
+    return payload;
   }
 }

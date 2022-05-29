@@ -84,6 +84,11 @@ export const response = {
     code: 2015,
     message: '유효하지 않은 권한입니다.',
   },
+  CANNOT_ACCESS_BY_AUTHORITY: {
+    isSuccess: false,
+    code: 2016,
+    message: '접근이 불가능한 권한입니다.',
+  },
   ERROR: {
     isSuccess: false,
     code: 4000,
