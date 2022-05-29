@@ -8,7 +8,7 @@ import { AdminSalt } from 'src/entity/adminSalt.entity';
 import { Connection, Repository } from 'typeorm';
 import { SignInRequest } from './dto/sign-in.request';
 import { SignUpRequest } from './dto/sign-up.request';
-import { Payload } from '../../../config/jwt/jwt.payload';
+import { Payload } from '../../Web/auth/jwt/jwt.payload';
 import {
   saltHashPassword,
   validatePassword,
@@ -56,21 +56,9 @@ export class AuthService {
         return response.NON_MATCH_PASSWORD;
       }
 
-      // 유저의 권한값 추출
-      const authority = await this.authorityRepository.findOne({
-        where: { id: admin.authority, status: 'ACTIVE' },
-      });
-
-      // 존재하지 않는 권한인 경우
-      if (authority == undefined) {
-        return response.INVALID_AUTHORITY;
-      }
-
       //payload값 생성
-
       const payload: Payload = {
         userId: admin.id,
-        authority: authority.type,
         email: signInRequest.email,
       };
 
@@ -80,7 +68,7 @@ export class AuthService {
       // Response의 result 객체에 Data를 담는 부분
       const data = {
         jwt: token,
-        authority: authority.type,
+        adminId: admin.id,
         email: signInRequest.email,
       };
 

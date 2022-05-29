@@ -8,7 +8,7 @@ import { AdminSalt } from 'src/entity/adminSalt.entity';
 import { Connection, Repository } from 'typeorm';
 import { SignInRequest } from './dto/sign-in.request';
 import { SignUpRequest } from './dto/sign-up.request';
-import { Payload } from '../../../config/jwt/jwt.payload';
+import { Payload } from './jwt/jwt.payload';
 import {
   saltHashPassword,
   validatePassword,
@@ -69,9 +69,8 @@ export class AuthService {
       //payload값 생성
 
       const payload: Payload = {
-        userId: admin.id,
+        adminId: admin.id,
         authority: authority.type,
-        email: signInRequest.email,
       };
 
       //토큰 생성
@@ -80,8 +79,8 @@ export class AuthService {
       // Response의 result 객체에 Data를 담는 부분
       const data = {
         jwt: token,
+        adminId: admin.id,
         authority: authority.type,
-        email: signInRequest.email,
       };
 
       return makeResponse(response.SUCCESS, data);

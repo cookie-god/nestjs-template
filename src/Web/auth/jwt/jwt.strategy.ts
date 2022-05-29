@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { secret } from '../secret';
+import { secret } from '../../../../config/secret';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Payload } from './jwt.payload';
 import { Repository } from 'typeorm';
@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromHeader('x-access-token'),
-      secretOrKey: secret.jwt_secret_key,
+      secretOrKey: secret.web_jwt_secret_key,
       ignoreExpiration: false,
     });
   }

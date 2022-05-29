@@ -6,14 +6,14 @@ import { AdminInfo } from 'src/entity/adminInfo.entity';
 import { AdminSalt } from 'src/entity/adminSalt.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtStrategy } from '../../../config/jwt/jwt.strategy';
+import { JwtStrategy } from '../../Admin/auth/jwt/jwt.strategy';
 import { Authority } from 'src/entity/authority.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([AdminInfo, AdminSalt, Authority]),
     JwtModule.register({
-      secret: secret.jwt_secret_key,
+      secret: secret.web_jwt_secret_key,
       signOptions: { expiresIn: '6h' },
     }),
   ],
