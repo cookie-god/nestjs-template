@@ -25,7 +25,10 @@ async function bootstrap() {
     .build();
 
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
+  SwaggerModule.setup('docs', app, document, {
+    // 밑에 쌓이는 DTO 없애는 코드
+    swaggerOptions: { defaultModelsExpandDepth: -1 },
+  });
 
   await app.listen(3030);
 }

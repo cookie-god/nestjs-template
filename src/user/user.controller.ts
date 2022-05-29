@@ -1,8 +1,9 @@
 import { Controller, Get, UseGuards, Request } from '@nestjs/common';
-import { ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiAuthorityCheck, makeResponse } from 'common/function.utils';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { response } from '../../config/response.utils';
+import { GetUsersResponse } from './dto/get-users.response';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -11,14 +12,29 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UseGuards(JwtAuthGuard)
-  @ApiOperation({ summary: '유저 조회' })
+  @ApiOperation({ summary: '유저 조회 (객체 리스트 리턴)' })
   @ApiHeader({
     description: 'jwt token',
     name: 'x-access-token',
     example: 'JWT TOKEN',
   })
+  @ApiResponse({
+    status: 1000,
+    description: '성공',
+    type: GetUsersResponse,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 2013,
+    description: '존재하지 않는 유저입니다.',
+  })
+  @ApiResponse({
+    status: 4000,
+    description: '서버 에러',
+  })
   @Get('/v1')
-  getUsersByMaster(@Request() req) {
+  getUsers(@Request() req) {
+    // 권한별 유저 접근 확인
     if (
       !ApiAuthorityCheck(req.user.authority, ['Master', 'Consultant', 'PM'])
     ) {

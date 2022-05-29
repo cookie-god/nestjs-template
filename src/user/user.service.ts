@@ -54,7 +54,6 @@ export class UserService {
       };
       return makeResponse(response.SUCCESS, data);
     } catch (error) {
-      console.log(error);
       return response.ERROR;
     }
   }

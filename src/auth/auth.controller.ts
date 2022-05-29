@@ -2,10 +2,10 @@ import { Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignUpUser, SignInUser } from 'common/decorators/user.decorator';
 import { AuthService } from './auth.service';
-import { SignInRequestDto } from './dto/sign-in-request.dto';
-import { SignInResponseDto } from './dto/sign-in-response.dto';
-import { SignUpRequestDto } from './dto/sign-up-request.dto';
-import { SignUpResponseDto } from './dto/sign-up-response.dto';
+import { SignInRequest } from './dto/sign-in.request';
+import { SignInResponse } from './dto/sign-in.response';
+import { SignUpRequest } from './dto/sign-up.request';
+import { SignUpResponse } from './dto/sign-up.response';
 
 @Controller('auth')
 @ApiTags('AUTH')
@@ -20,7 +20,7 @@ export class AuthController {
   @ApiResponse({
     status: 1000,
     description: '성공',
-    type: SignInResponseDto,
+    type: SignInResponse,
   })
   @ApiResponse({
     status: 2013,
@@ -59,9 +59,9 @@ export class AuthController {
     description: '서버 에러',
   })
   @ApiOperation({ summary: '로그인' })
-  @ApiBody({ description: '로그인 DTO', type: SignInRequestDto })
+  @ApiBody({ description: '로그인 DTO', type: SignInRequest })
   @Post('sign-in')
-  postSignIn(@SignInUser() signInRequest: SignInRequestDto) {
+  postSignIn(@SignInUser() signInRequest: SignInRequest) {
     return this.authService.signInUser(signInRequest);
   }
 
@@ -73,7 +73,7 @@ export class AuthController {
   @ApiResponse({
     status: 1000,
     description: '성공',
-    type: SignUpResponseDto,
+    type: SignUpResponse,
   })
   @ApiResponse({
     status: 2004,
@@ -124,9 +124,9 @@ export class AuthController {
     description: '서버 에러',
   })
   @ApiOperation({ summary: '회원가입' })
-  @ApiBody({ description: '회원가입 DTO', type: SignUpRequestDto })
+  @ApiBody({ description: '회원가입 DTO', type: SignUpRequest })
   @Post('sign-up')
-  postSignUp(@SignUpUser() signUpRequest: SignUpRequestDto) {
+  postSignUp(@SignUpUser() signUpRequest: SignUpRequest) {
     return this.authService.signUpUser(signUpRequest);
   }
 }

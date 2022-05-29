@@ -6,8 +6,8 @@ import { response } from 'config/response.utils';
 import { UserInfo } from 'src/entity/userInfo.entity';
 import { UserSalt } from 'src/entity/userSalt.entity';
 import { Repository } from 'typeorm';
-import { SignInRequestDto } from './dto/sign-in-request.dto';
-import { SignUpRequestDto } from './dto/sign-up-request.dto';
+import { SignInRequest } from './dto/sign-in.request';
+import { SignUpRequest } from './dto/sign-up.request';
 import { Payload } from './jwt/jwt.payload';
 import {
   saltHashPassword,
@@ -27,7 +27,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signInUser(signInRequest: SignInRequestDto) {
+  async signInUser(signInRequest: SignInRequest) {
     try {
       // 입력한 이메일에 해당하는 유저값 추출
       const user = await this.authRepository.findOne({
@@ -86,7 +86,7 @@ export class AuthService {
     }
   }
 
-  async signUpUser(signUpRequest: SignUpRequestDto) {
+  async signUpUser(signUpRequest: SignUpRequest) {
     const securityData = saltHashPassword(signUpRequest.password);
 
     try {
