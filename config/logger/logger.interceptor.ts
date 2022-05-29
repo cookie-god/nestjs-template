@@ -4,7 +4,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { LoggerService } from './logger.service';
 
 @Injectable()
@@ -28,24 +28,10 @@ export class HTTPLoggingInterceptor implements NestInterceptor {
       map((data) => {
         const delay = Date.now() - now;
 
-        const keys = Object.keys(data);
-        const responseArray = [];
-        for (let i = 0; i < 3; i++) {
-          responseArray.push(`\n${keys[i]} : ${data[keys[i]]}`);
-        }
-
-        if (data.result != undefined) {
-          const resultKeys = Object.keys(data.result);
-          for (const key of resultKeys) {
-            responseArray.push(`\n${key} : ${data.result[key]}`);
-          }
-        }
-
         loggerService.log(
-          `${_url} ${_headers} ${_query} ${_body} ${responseArray} \ndelay = ${delay}ms`.replace(
-            /\\/,
-            '',
-          ),
+          `${_url} ${_headers} ${_query} ${_body} \n${JSON.stringify(
+            data,
+          )} \ndelay = ${delay}ms`.replace(/\\/, ''),
         );
         console.log(`${response.statusCode} | [${method}] ${url} - ${delay}ms`);
         return data;
