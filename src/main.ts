@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { secret } from 'config/secret';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import * as expressBasicAuth from 'express-basic-auth';
-import { HTTPLoggingInterceptor } from 'config/logger/logger.interceptor';
+import { HTTPLoggingInterceptor } from 'common/logger/logger.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
