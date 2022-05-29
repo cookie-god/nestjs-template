@@ -5,7 +5,7 @@ import { makeResponse } from 'common/function.utils';
 import { response } from 'config/response.utils';
 import { UserInfo } from 'src/entity/userInfo.entity';
 import { UserSalt } from 'src/entity/userSalt.entity';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { SignInRequest } from './dto/sign-in.request';
 import { SignUpRequest } from './dto/sign-up.request';
 import { Payload } from './jwt/jwt.payload';
@@ -25,6 +25,7 @@ export class AuthService {
     @InjectRepository(Authority)
     private readonly authorityRepository: Repository<Authority>,
     private jwtService: JwtService,
+    private connection: Connection,
   ) {}
 
   async signInUser(signInRequest: SignInRequest) {
@@ -87,7 +88,9 @@ export class AuthService {
 
   async signUpUser(signUpRequest: SignUpRequest) {
     const securityData = saltHashPassword(signUpRequest.password);
-
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
       // 가입한 이메일이 존재하는지 체크
       const isExistUserByEmail = await this.authRepository.count({
@@ -122,6 +125,9 @@ export class AuthService {
       userSalt.userId = createUserData.id;
       await this.saltRepository.save(userSalt);
 
+      // Commit
+      await queryRunner.commitTransaction();
+
       // Response의 result 객체에 Data를 담는 부분
       const data = {
         userId: createUserData.id,
@@ -131,7 +137,12 @@ export class AuthService {
 
       return makeResponse(response.SUCCESS, data);
     } catch (error) {
+      // Rollback
+      await queryRunner.rollbackTransaction();
       return response.ERROR;
+    } finally {
+      // Connection Release
+      await queryRunner.release();
     }
   }
 }
