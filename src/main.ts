@@ -13,7 +13,7 @@ async function bootstrap() {
     expressBasicAuth({
       challenge: true,
       users: {
-        cookie: secret.swagger_password,
+        gridge: secret.swagger_password,
       },
     }),
   );
