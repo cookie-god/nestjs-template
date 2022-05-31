@@ -6,16 +6,24 @@ import { AppService } from './app.service';
 import { AuthModule } from './Web/auth/auth.module';
 import { AdminUserModule } from './Admin/user/user.module';
 import { AdminAuthModule } from './Admin/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : 'env.test',
+      ignoreEnvFile: process.env.NODE_ENV === 'prod',
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '127.0.0.1',
-      port: 3306,
-      username: 'root',
-      password: 'kooki7869^^',
-      database: 'test',
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      username: process.env.USER,
+      // username: 'dm',
+      password: process.env.PASSWORD,
+      // password: 'dm220530!',
+      database: process.env.DB_NAME,
       entities: [__dirname + '/**/entity/*.entity{.ts,.js}'],
       synchronize: true,
       bigNumberStrings: false,

@@ -6,6 +6,7 @@ import * as expressBasicAuth from 'express-basic-auth';
 import { HTTPLoggingInterceptor } from 'common/logger/logger.interceptor';
 
 async function bootstrap() {
+  console.log(process.env.DB_USER);
   const app = await NestFactory.create(AppModule);
   app.useGlobalInterceptors(new HTTPLoggingInterceptor());
   app.use(
