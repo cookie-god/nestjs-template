@@ -7,6 +7,7 @@ import { AuthModule } from './Web/auth/auth.module';
 import { AdminUserModule } from './Admin/user/user.module';
 import { AdminAuthModule } from './Admin/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { ApiCallHistory } from './entity/api-call-history.entity';
 
 @Module({
   imports: [
@@ -23,10 +24,11 @@ import { ConfigModule } from '@nestjs/config';
       password: 'kooki7869^^',
       database: 'test',
       entities: [__dirname + '/**/entity/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
       bigNumberStrings: false,
       charset: 'utf8mb4',
     }),
+    TypeOrmModule.forFeature([ApiCallHistory]),
     AuthModule,
     AdminUserModule,
     AdminAuthModule,

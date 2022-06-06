@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { makeResponse } from 'common/function.utils';
+import { makeResponse, saveApiCallHistory } from 'common/function.utils';
 import { response } from 'config/response.utils';
 import { AdminInfo } from 'src/entity/admin-info.entity';
 import { AdminSalt } from 'src/entity/admin-salt.entity';
@@ -14,6 +14,7 @@ import {
   validatePassword,
 } from '../../../config/security.utils';
 import { Authority } from 'src/entity/authority.entity';
+import { AdminSignInResponse } from './dto/admin-sign-in.response';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,7 @@ export class AuthService {
     private connection: Connection,
   ) {}
 
-  async signInUser(signInRequest: AdminSignInRequest) {
+  async signInUser(request: any, signInRequest: AdminSignInRequest) {
     try {
       // 입력한 이메일에 해당하는 유저값 추출
       const admin = await this.adminRepository.findOne({
@@ -69,7 +70,7 @@ export class AuthService {
       //payload값 생성
 
       const payload: Payload = {
-        adminId: admin.id,
+        id: admin.id,
         authority: authority.type,
       };
 
@@ -83,7 +84,10 @@ export class AuthService {
         authority: authority.type,
       };
 
-      return makeResponse(response.SUCCESS, data);
+      const result = makeResponse(response.SUCCESS, data);
+      await saveApiCallHistory('Admin', request, result);
+
+      return result;
     } catch (error) {
       return response.ERROR;
     }
@@ -136,14 +140,13 @@ export class AuthService {
         email: createUserData.email,
       };
 
+      await queryRunner.release();
       return makeResponse(response.SUCCESS, data);
     } catch (error) {
       // Rollback
       await queryRunner.rollbackTransaction();
-      return response.ERROR;
-    } finally {
-      // Connection Release
       await queryRunner.release();
+      return response.ERROR;
     }
   }
 }

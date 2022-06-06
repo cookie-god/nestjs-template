@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { makeResponse } from 'common/function.utils';
+import { makeResponse, saveApiCallHistory } from 'common/function.utils';
 import { response } from 'config/response.utils';
 import { UserInfo } from 'src/entity/user-info.entity';
 import { getManager, Repository } from 'typeorm';
@@ -12,7 +12,7 @@ export class UserService {
     private readonly userRepository: Repository<UserInfo>,
   ) {}
 
-  async retrieveUsers(authority: string) {
+  async retrieveUsers(request: any, authority: string) {
     try {
       let users = [];
       // Master/Consultant,PM 유저인 경우
@@ -42,7 +42,11 @@ export class UserService {
       const data = {
         users: users,
       };
-      return makeResponse(response.SUCCESS, data);
+
+      const result = makeResponse(response.SUCCESS, data);
+
+      await saveApiCallHistory('Admin', request, result);
+      return result;
     } catch (error) {
       return response.ERROR;
     }

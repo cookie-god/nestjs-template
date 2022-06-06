@@ -24,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: Payload) {
     // User 정보 추출
     const admin = await this.adminRepository.findOne({
-      where: { id: payload.adminId, status: 'ACTIVE' },
+      where: { id: payload.id, status: 'ACTIVE' },
     });
     // 유저가 존재하지 않는 경우
     if (admin == undefined) {

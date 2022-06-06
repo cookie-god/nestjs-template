@@ -44,6 +44,6 @@ export class UserController {
     ) {
       return response.CANNOT_ACCESS_BY_AUTHORITY;
     }
-    return this.userService.retrieveUsers(req.user.authority);
+    return this.userService.retrieveUsers(req, req.user.authority);
   }
 }

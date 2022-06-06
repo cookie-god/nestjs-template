@@ -1,4 +1,4 @@
 export type Payload = {
-  adminId: number;
+  id: number;
   authority: string;
 };

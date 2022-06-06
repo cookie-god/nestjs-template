@@ -51,7 +51,7 @@ export class AuthService {
 
       //payload값 생성
       const payload: Payload = {
-        userId: user.id,
+        id: user.id,
         email: signInRequest.email,
       };
 
