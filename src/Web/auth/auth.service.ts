@@ -13,6 +13,7 @@ import {
   saltHashPassword,
   validatePassword,
 } from '../../../config/security.utils';
+import { query } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -95,13 +96,13 @@ export class AuthService {
       userInfo.email = signUpRequest.email;
       userInfo.password = securityData.hashedPassword;
       userInfo.nickname = signUpRequest.nickname;
-      const createUserData = await this.userRepository.save(userInfo);
+      const createUserData = await queryRunner.manager.save(userInfo);
 
       // UserSalt 인스턴스 생성후, 정보 담는 부분
       const userSalt = new UserSalt();
       userSalt.salt = securityData.salt;
       userSalt.userId = createUserData.id;
-      await this.userSaltRepository.save(userSalt);
+      await queryRunner.manager.save(userSalt);
 
       // Response의 result 객체에 Data를 담는 부분
       const data = {
@@ -122,8 +123,6 @@ export class AuthService {
       await queryRunner.rollbackTransaction();
       await queryRunner.release();
       return response.ERROR;
-    } finally {
-      // Connection Release
     }
   }
 }

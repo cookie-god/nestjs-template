@@ -123,13 +123,13 @@ export class AuthService {
       adminInfo.email = signUpRequest.email;
       adminInfo.password = securityData.hashedPassword;
       adminInfo.authority = signUpRequest.authority;
-      const createUserData = await this.adminRepository.save(adminInfo);
+      const createUserData = await queryRunner.manager.save(adminInfo);
 
       // AdminSalt 인스턴스 생성후, 정보 담는 부분
       const adminSalt = new AdminSalt();
       adminSalt.salt = securityData.salt;
       adminSalt.adminId = createUserData.id;
-      await this.adminSaltRepository.save(adminSalt);
+      await await queryRunner.manager.save(adminSalt);
 
       // Commit
       await queryRunner.commitTransaction();
