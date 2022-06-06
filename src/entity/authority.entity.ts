@@ -8,6 +8,9 @@ export class Authority {
   @Column({ length: 20, nullable: false })
   type: string;
 
+  @Column({ length: 20, nullable: false })
+  check: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: string;
 
