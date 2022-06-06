@@ -17,7 +17,7 @@ class AdminSignInResponseData {
     required: true,
   })
   @IsNumber()
-  adminId: number;
+  id: number;
 
   @ApiProperty({
     example: 'Master',

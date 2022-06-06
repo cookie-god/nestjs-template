@@ -80,7 +80,7 @@ export class AuthService {
       // Response의 result 객체에 Data를 담는 부분
       const data = {
         jwt: token,
-        adminId: admin.id,
+        id: admin.id,
         authority: authority.type,
       };
 
@@ -136,7 +136,7 @@ export class AuthService {
 
       // Response의 result 객체에 Data를 담는 부분
       const data = {
-        userId: createUserData.id,
+        id: createUserData.id,
         email: createUserData.email,
       };
 

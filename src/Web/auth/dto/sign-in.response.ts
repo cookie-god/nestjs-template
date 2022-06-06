@@ -17,7 +17,7 @@ class SignInResponseData {
     required: true,
   })
   @IsNumber()
-  userId: number;
+  id: number;
 
   @ApiProperty({
     example: 'user@email.com',

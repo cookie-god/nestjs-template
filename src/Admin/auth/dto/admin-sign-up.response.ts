@@ -5,11 +5,11 @@ import { BaseResponse } from 'config/base.response';
 class AdminSignUpResultData {
   @ApiProperty({
     example: 1,
-    description: '목표',
+    description: '아이디',
     required: true,
   })
   @IsNumber()
-  adminId: number;
+  id: number;
 
   @ApiProperty({
     example: 'email@email.com',
