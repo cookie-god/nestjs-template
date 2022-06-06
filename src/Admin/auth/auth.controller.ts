@@ -122,7 +122,7 @@ export class AuthController {
   @ApiOperation({ summary: '회원가입' })
   @ApiBody({ description: '회원가입 DTO', type: AdminSignUpRequest })
   @Post('sign-up')
-  postSignUp(@SignUpUser() signUpRequest: AdminSignUpRequest) {
-    return this.authService.signUpUser(signUpRequest);
+  postSignUp(@Request() req, @SignUpUser() signUpRequest: AdminSignUpRequest) {
+    return this.authService.signUpUser(req, signUpRequest);
   }
 }

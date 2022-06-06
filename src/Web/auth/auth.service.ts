@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { makeResponse } from 'common/function.utils';
+import { makeResponse, saveApiCallHistory } from 'common/function.utils';
 import { response } from 'config/response.utils';
 import { UserInfo } from 'src/entity/user-info.entity';
 import { UserSalt } from 'src/entity/user-salt.entity';
@@ -25,7 +25,7 @@ export class AuthService {
     private connection: Connection,
   ) {}
 
-  async signInUser(signInRequest: SignInRequest) {
+  async signInUser(request: any, signInRequest: SignInRequest) {
     try {
       // 입력한 이메일에 해당하는 유저값 추출
       const user = await this.userRepository.findOne({
@@ -61,17 +61,20 @@ export class AuthService {
       // Response의 result 객체에 Data를 담는 부분
       const data = {
         jwt: token,
-        userId: user.id,
+        id: user.id,
         email: signInRequest.email,
       };
 
-      return makeResponse(response.SUCCESS, data);
+      const result = makeResponse(response.SUCCESS, data);
+      await saveApiCallHistory('User', request, result);
+
+      return result;
     } catch (error) {
       return response.ERROR;
     }
   }
 
-  async signUpUser(signUpRequest: SignUpRequest) {
+  async signUpUser(request: any, signUpRequest: SignUpRequest) {
     const securityData = saltHashPassword(signUpRequest.password);
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
@@ -100,23 +103,27 @@ export class AuthService {
       userSalt.userId = createUserData.id;
       await this.userSaltRepository.save(userSalt);
 
-      // Commit
-      await queryRunner.commitTransaction();
-
       // Response의 result 객체에 Data를 담는 부분
       const data = {
         userId: createUserData.id,
         email: createUserData.email,
       };
 
-      return makeResponse(response.SUCCESS, data);
+      const result = makeResponse(response.SUCCESS, data);
+      await saveApiCallHistory('User', request, result);
+
+      // Commit
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return result;
     } catch (error) {
       // Rollback
       await queryRunner.rollbackTransaction();
+      await queryRunner.release();
       return response.ERROR;
     } finally {
       // Connection Release
-      await queryRunner.release();
     }
   }
 }

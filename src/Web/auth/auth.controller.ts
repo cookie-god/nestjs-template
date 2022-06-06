@@ -1,4 +1,4 @@
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Post, Request } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SignUpUser, SignInUser } from '../decorators/auth.decorator';
 import { AuthService } from './auth.service';
@@ -61,8 +61,8 @@ export class AuthController {
   @ApiOperation({ summary: '로그인' })
   @ApiBody({ description: '로그인 DTO', type: SignInRequest })
   @Post('sign-in')
-  postSignIn(@SignInUser() signInRequest: SignInRequest) {
-    return this.authService.signInUser(signInRequest);
+  postSignIn(@Request() req, @SignInUser() signInRequest: SignInRequest) {
+    return this.authService.signInUser(req, signInRequest);
   }
 
   /**
@@ -122,7 +122,7 @@ export class AuthController {
   @ApiOperation({ summary: '회원가입' })
   @ApiBody({ description: '회원가입 DTO', type: SignUpRequest })
   @Post('sign-up')
-  postSignUp(@SignUpUser() signUpRequest: SignUpRequest) {
-    return this.authService.signUpUser(signUpRequest);
+  postSignUp(@Request() req, @SignUpUser() signUpRequest: SignUpRequest) {
+    return this.authService.signUpUser(req, signUpRequest);
   }
 }

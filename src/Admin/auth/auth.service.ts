@@ -93,7 +93,7 @@ export class AuthService {
     }
   }
 
-  async signUpUser(signUpRequest: AdminSignUpRequest) {
+  async signUpUser(request: any, signUpRequest: AdminSignUpRequest) {
     const securityData = saltHashPassword(signUpRequest.password);
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
@@ -140,8 +140,12 @@ export class AuthService {
         email: createUserData.email,
       };
 
+      const result = makeResponse(response.SUCCESS, data);
+      await saveApiCallHistory('Admin', request, result);
+
       await queryRunner.release();
-      return makeResponse(response.SUCCESS, data);
+
+      return result;
     } catch (error) {
       // Rollback
       await queryRunner.rollbackTransaction();
