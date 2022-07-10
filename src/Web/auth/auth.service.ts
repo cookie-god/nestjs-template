@@ -13,7 +13,7 @@ import {
   saltHashPassword,
   validatePassword,
 } from '../../../config/security.utils';
-import { ROLE } from 'common/variable.utils';
+import { Role } from 'common/variable.utils';
 
 @Injectable()
 export class AuthService {
@@ -54,7 +54,7 @@ export class AuthService {
       const payload: Payload = {
         id: user.id,
         email: signInRequest.email,
-        role: ROLE.USER,
+        role: Role.USER,
       };
 
       //토큰 생성

@@ -40,6 +40,7 @@
     "express-basic-auth": "^1.2.1",
     "joi": "^17.6.0",
     "js-yaml": "^4.1.0",
+    "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "nest-winston": "^1.6.2",

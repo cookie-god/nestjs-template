@@ -15,7 +15,7 @@ import {
 } from '../../../config/security.utils';
 import { Authority } from 'src/entity/authority.entity';
 import { AdminSignInResponse } from './dto/admin-sign-in.response';
-import { ROLE } from 'common/variable.utils';
+import { Role } from 'common/variable.utils';
 
 @Injectable()
 export class AuthService {
@@ -73,7 +73,7 @@ export class AuthService {
       const payload: Payload = {
         id: admin.id,
         authority: authority.type,
-        role: ROLE.ADMIN,
+        role: Role.ADMIN,
       };
 
       //토큰 생성
