@@ -13,7 +13,7 @@ import {
   saltHashPassword,
   validatePassword,
 } from '../../../config/security.utils';
-import { Role, Status } from 'common/variable.utils';
+import { HistoryType, Role, Status } from 'common/variable.utils';
 
 @Injectable()
 export class AuthService {
@@ -68,7 +68,13 @@ export class AuthService {
       };
 
       const result = makeResponse(RESPONSE.SUCCESS, data);
-      await saveApiCallHistory(Role.USER, request, result);
+      await saveApiCallHistory(
+        HistoryType.READ,
+        Role.USER,
+        '[유저] 로그인 API',
+        request,
+        result,
+      );
 
       return result;
     } catch (error) {
@@ -112,7 +118,13 @@ export class AuthService {
       };
 
       const result = makeResponse(RESPONSE.SUCCESS, data);
-      await saveApiCallHistory(Role.USER, request, result);
+      await saveApiCallHistory(
+        HistoryType.CREATE,
+        Role.USER,
+        '[유저] 회원가입 API',
+        request,
+        result,
+      );
 
       // Commit
       await queryRunner.commitTransaction();

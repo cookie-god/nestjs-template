@@ -28,34 +28,51 @@ export function ApiAuthorityCheck(authority: string, list: string[]) {
 
 /**
  * description : ApiCallHistory에 로그 저장하는 함수
+ * historyType : HistoryType ENUM에서 C, R, U, D에 맞게 넣으면 됩니다.
+ * userType : UserType ENUM에서 유저에 맞게 넣으면 됩니다.
+ * apiName : 각 도메인+controller에 작성되어있는 Swagger의 API명을 넣으면 됩니다.
+ * req : request 객체를 넣으면 됩니다.
+ * res : makeResponse()를 통해 만들어진 response를 넣으면 됩니다.
  */
-export async function saveApiCallHistory(userType: string, req: any, res: any) {
-  let userId = 0;
+export async function saveApiCallHistory(
+  historyType: string,
+  userType: string,
+  apiName: string,
+  req: any,
+  res: any,
+) {
+  let id = 0;
   let queryString = null;
   let pathVariable = null;
   let body = null;
   try {
+    // 유저의 아이디가 있는지 검사하는 로직
     if (req.user != undefined) {
-      userId = req.user.id;
+      id = req.user.id;
     }
+    // query string이 있는지 검사하는 로직
     if (req.query != undefined) {
       queryString = req.query;
     }
+    // path variable이 있는지 검사하는 로직
     if (req.params != undefined) {
       pathVariable = req.params;
     }
+    // body가 있는지 검사하는 로직
     if (req.body != undefined) {
       body = req.body;
     }
     const query = `
-      INSERT INTO ApiCallHistory(userType, savedId, apiUrl, apiMethod,
-      requestQuery, requestBody, requestParams, responseParams)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO ApiCallHistory(historyType, userType, savedId, apiUri, apiName, apiMethod,
+      requestQuery, requestBody, requestPath, response, status, createdAt)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '활성화', CURRENT_TIMESTAMP)
     `;
     const param = [
+      historyType,
       userType,
-      userId,
+      id,
       req.url,
+      apiName,
       req.method,
       JSON.stringify(queryString),
       JSON.stringify(body),

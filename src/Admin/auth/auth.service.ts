@@ -15,7 +15,7 @@ import {
 } from '../../../config/security.utils';
 import { Authority } from 'src/entity/authority.entity';
 import { AdminSignInResponse } from './dto/admin-sign-in.response';
-import { Role, Status } from 'common/variable.utils';
+import { HistoryType, Role, Status } from 'common/variable.utils';
 
 @Injectable()
 export class AuthService {
@@ -87,7 +87,14 @@ export class AuthService {
       };
 
       const result = makeResponse(RESPONSE.SUCCESS, data);
-      await saveApiCallHistory(Role.ADMIN, request, result);
+
+      await saveApiCallHistory(
+        HistoryType.READ,
+        Role.ADMIN,
+        '[관리자] 로그인 API',
+        request,
+        result,
+      );
 
       return result;
     } catch (error) {
@@ -143,7 +150,13 @@ export class AuthService {
       };
 
       const result = makeResponse(RESPONSE.SUCCESS, data);
-      await saveApiCallHistory(Role.ADMIN, request, result);
+      await saveApiCallHistory(
+        HistoryType.CREATE,
+        Role.ADMIN,
+        '[관리자] 회원가입 API',
+        request,
+        result,
+      );
 
       return result;
     } catch (error) {
