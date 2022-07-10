@@ -1,6 +1,6 @@
 import { HttpException } from '@nestjs/common';
 import { Role } from 'common/variable.utils';
-import { response } from 'config/response.utils';
+import { RESPONSE } from 'config/response.utils';
 import jwt_decode from 'jwt-decode';
 import { Payload } from './jwt.payload';
 
@@ -16,11 +16,11 @@ export function jwtDecode(jwt: string | undefined, required: boolean): Payload {
     try {
       const payload: Payload = jwt_decode(jwt);
       if (payload.role !== Role.USER) {
-        throw new HttpException(response.CHECK_JWT_TOKEN, 201);
+        throw new HttpException(RESPONSE.CHECK_JWT_TOKEN, 201);
       }
       return payload;
     } catch (error) {
-      throw new HttpException(response.CHECK_JWT_TOKEN, 201);
+      throw new HttpException(RESPONSE.CHECK_JWT_TOKEN, 201);
     }
   } else {
     if (jwt != undefined) {
@@ -28,7 +28,7 @@ export function jwtDecode(jwt: string | undefined, required: boolean): Payload {
         const payload: Payload = jwt_decode(jwt);
         return payload;
       } catch (error) {
-        throw new HttpException(response.CHECK_JWT_TOKEN, 201);
+        throw new HttpException(RESPONSE.CHECK_JWT_TOKEN, 201);
       }
     } else {
       return undefined;

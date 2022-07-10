@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common';
-import { response } from 'config/response.utils';
+import { RESPONSE } from 'config/response.utils';
 import { getManager } from 'typeorm';
 
 /**
@@ -65,6 +65,6 @@ export async function saveApiCallHistory(userType: string, req: any, res: any) {
     const entityManager = getManager();
     await entityManager.query(query, param);
   } catch (error) {
-    throw new HttpException(response.ERROR, 201);
+    throw new HttpException(RESPONSE.ERROR, 201);
   }
 }

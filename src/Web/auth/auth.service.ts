@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { makeResponse, saveApiCallHistory } from 'common/function.utils';
-import { response } from 'config/response.utils';
+import { RESPONSE } from 'config/response.utils';
 import { UserInfo } from 'src/entity/user-info.entity';
 import { UserSalt } from 'src/entity/user-salt.entity';
 import { Connection, Repository } from 'typeorm';
@@ -35,7 +35,7 @@ export class AuthService {
 
       // 존재하지 않는 유저 체크
       if (user == undefined) {
-        return response.NON_EXIST_EMAIL;
+        return RESPONSE.NON_EXIST_EMAIL;
       }
 
       //유저 아이디에 해당하는 Salt값 추출
@@ -47,7 +47,7 @@ export class AuthService {
       if (
         !validatePassword(signInRequest.password, userSalt.salt, user.password)
       ) {
-        return response.NON_MATCH_PASSWORD;
+        return RESPONSE.NON_MATCH_PASSWORD;
       }
 
       //payload값 생성
@@ -67,12 +67,12 @@ export class AuthService {
         email: signInRequest.email,
       };
 
-      const result = makeResponse(response.SUCCESS, data);
+      const result = makeResponse(RESPONSE.SUCCESS, data);
       await saveApiCallHistory(Role.USER, request, result);
 
       return result;
     } catch (error) {
-      return response.ERROR;
+      return RESPONSE.ERROR;
     }
   }
 
@@ -89,7 +89,7 @@ export class AuthService {
 
       // user 정보가 있는지 체크
       if (isExistUserByEmail > 0) {
-        return response.EXIST_EMAIL;
+        return RESPONSE.EXIST_EMAIL;
       }
 
       // UserInfo 인스턴스 생성후, 정보 담는 부분
@@ -111,7 +111,7 @@ export class AuthService {
         email: createUserData.email,
       };
 
-      const result = makeResponse(response.SUCCESS, data);
+      const result = makeResponse(RESPONSE.SUCCESS, data);
       await saveApiCallHistory(Role.USER, request, result);
 
       // Commit
@@ -121,7 +121,7 @@ export class AuthService {
     } catch (error) {
       // Rollback
       await queryRunner.rollbackTransaction();
-      return response.ERROR;
+      return RESPONSE.ERROR;
     } finally {
       await queryRunner.release();
     }
@@ -138,7 +138,7 @@ export class AuthService {
       }
       return true;
     } catch (error) {
-      throw new HttpException(response.ERROR, 200);
+      throw new HttpException(RESPONSE.ERROR, 200);
     }
   }
 }

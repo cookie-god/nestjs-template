@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards, Request } from '@nestjs/common';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiAuthorityCheck } from 'common/function.utils';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
-import { response } from '../../../config/response.utils';
+import { RESPONSE } from '../../../config/response.utils';
 import { AdminGetUsersResponse } from './dto/admin-get-users.response';
 import { UserService } from './user.service';
 
@@ -45,7 +45,7 @@ export class UserController {
     if (
       !ApiAuthorityCheck(req.user.authority, ['Master', 'Consultant', 'PM'])
     ) {
-      return response.CANNOT_ACCESS_BY_AUTHORITY;
+      return RESPONSE.CANNOT_ACCESS_BY_AUTHORITY;
     }
     return this.userService.retrieveUsers(req, req.user.authority);
   }

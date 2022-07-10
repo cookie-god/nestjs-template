@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { makeResponse, saveApiCallHistory } from 'common/function.utils';
-import { response } from 'config/response.utils';
+import { RESPONSE } from 'config/response.utils';
 import { AdminInfo } from 'src/entity/admin-info.entity';
 import { AdminSalt } from 'src/entity/admin-salt.entity';
 import { Connection, Repository } from 'typeorm';
@@ -39,7 +39,7 @@ export class AuthService {
 
       // 존재하지 않는 관리자 체크
       if (admin == undefined) {
-        return response.NON_EXIST_EMAIL;
+        return RESPONSE.NON_EXIST_EMAIL;
       }
 
       //유저 아이디에 해당하는 Salt값 추출
@@ -55,7 +55,7 @@ export class AuthService {
           admin.password,
         )
       ) {
-        return response.NON_MATCH_PASSWORD;
+        return RESPONSE.NON_MATCH_PASSWORD;
       }
 
       // 유저의 권한값 추출
@@ -65,7 +65,7 @@ export class AuthService {
 
       // 존재하지 않는 권한인 경우
       if (authority == undefined) {
-        return response.INVALID_AUTHORITY;
+        return RESPONSE.INVALID_AUTHORITY;
       }
 
       //payload값 생성
@@ -86,12 +86,12 @@ export class AuthService {
         authority: authority.type,
       };
 
-      const result = makeResponse(response.SUCCESS, data);
+      const result = makeResponse(RESPONSE.SUCCESS, data);
       await saveApiCallHistory(Role.ADMIN, request, result);
 
       return result;
     } catch (error) {
-      return response.ERROR;
+      return RESPONSE.ERROR;
     }
   }
 
@@ -108,7 +108,7 @@ export class AuthService {
 
       // admin 정보가 있는지 체크
       if (isExistAdminByEmail > 0) {
-        return response.EXIST_EMAIL;
+        return RESPONSE.EXIST_EMAIL;
       }
 
       // 존재하는 권한 아이디인지 체크
@@ -117,7 +117,7 @@ export class AuthService {
       });
 
       if (isExistAuthorityId === 0) {
-        return response.INVALID_AUTHORITY;
+        return RESPONSE.INVALID_AUTHORITY;
       }
 
       // AdminInfo 인스턴스 생성후, 정보 담는 부분
@@ -142,14 +142,14 @@ export class AuthService {
         email: createUserData.email,
       };
 
-      const result = makeResponse(response.SUCCESS, data);
+      const result = makeResponse(RESPONSE.SUCCESS, data);
       await saveApiCallHistory(Role.ADMIN, request, result);
 
       return result;
     } catch (error) {
       // Rollback
       await queryRunner.rollbackTransaction();
-      return response.ERROR;
+      return RESPONSE.ERROR;
     } finally {
       await queryRunner.release();
     }
@@ -166,7 +166,7 @@ export class AuthService {
       }
       return true;
     } catch (error) {
-      throw new HttpException(response.ERROR, 200);
+      throw new HttpException(RESPONSE.ERROR, 200);
     }
   }
 }

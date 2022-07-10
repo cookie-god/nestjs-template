@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { makeResponse, saveApiCallHistory } from 'common/function.utils';
-import { response } from 'config/response.utils';
+import { RESPONSE } from 'config/response.utils';
 import { UserInfo } from 'src/entity/user-info.entity';
 import { getManager, Repository } from 'typeorm';
 
@@ -43,12 +43,12 @@ export class UserService {
         users: users,
       };
 
-      const result = makeResponse(response.SUCCESS, data);
+      const result = makeResponse(RESPONSE.SUCCESS, data);
 
       await saveApiCallHistory('Admin', request, result);
       return result;
     } catch (error) {
-      return response.ERROR;
+      return RESPONSE.ERROR;
     }
   }
 }
