@@ -1,4 +1,4 @@
-export const response = {
+export const RESPONSE = {
   SUCCESS: {
     isSuccess: true,
     code: 1000,

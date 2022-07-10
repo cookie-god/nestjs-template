@@ -1,5 +1,6 @@
 import { Controller, Post, Request } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { RESPONSE } from 'config/response.utils';
 import { SignUpUser, SignInUser } from '../decorators/auth.decorator';
 import { AuthService } from './auth.service';
 import { AdminSignInRequest } from './dto/admin-sign-in.request';
@@ -23,8 +24,8 @@ export class AuthController {
     type: AdminSignInResponse,
   })
   @ApiResponse({
-    status: 2013,
-    description: '존재하지 않는 유저입니다.',
+    status: 2000,
+    description: 'JWT 토큰을 확인해주세요.',
   })
   @ApiResponse({
     status: 2004,

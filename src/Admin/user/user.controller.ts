@@ -28,6 +28,10 @@ export class UserController {
     type: AdminGetUsersResponse,
   })
   @ApiResponse({
+    status: 2000,
+    description: '존재하지 않는 유저입니다.',
+  })
+  @ApiResponse({
     status: 2013,
     description: '존재하지 않는 유저입니다.',
   })
