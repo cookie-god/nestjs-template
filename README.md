@@ -1,80 +1,6 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
-```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
-
 ## 프로젝트 명
 
-- (프로젝트명)
+- NestJS 템플릿
 
 ## 프레임워크
 
@@ -110,6 +36,7 @@ Nest is [MIT licensed](LICENSE).
 │   ├── logger                                                    # log관련 설정 파일들이 있는 폴더
 │   │   ├── logger.interceptor.ts                                 # logger에 작성될 내용들을 작성한 파일
 │   │   ├── logger.service.ts                                     # logger 종류를 나타낸 파일
+│   ├── variable.utils.ts                                         # 공통적으로 사용되는 변수가 있는 파일
 │   ├── function.utils.ts                                         # 공통적으로 사용되는 함수가 있는 파일
 ├── config                                                        # 설정 파일들이 들어가 있는 폴더
 │   ├── base.response.ts                                          # 기본 response 양식
@@ -132,6 +59,7 @@ Nest is [MIT licensed](LICENSE).
 │   │   │   │   ├── jwt.guard.ts                                  # jwt 에러 처리 파일
 │   │   │   │   ├── jwt.payload.ts                                # jwt payload 파일
 │   │   │   │   ├── jwt.strategy.ts                               # jwt 추출/검증 파일
+│   │   │   │   ├── jwt.utils.ts                                  # jwt-decode 모듈 검증 파일
 │   │   │   ├── auth.controller.spec.ts                           # auth controller 테스트 파일
 │   │   │   ├── auth.controller.ts                                # auth controller 파일
 │   │   │   ├── auth.module.ts                                    # auth module 파일
@@ -182,7 +110,7 @@ PM2 (실 서버)
 시작 명령어
 1. dist 폴더가 있으면 제거
 2. git pull
-3. npm run start를 통해 dist 폴더 생성
+3. npm run build를 통해 dist 폴더 생성
 4. npm run start:prod
 종료 명령어: pm2 stop main
 
