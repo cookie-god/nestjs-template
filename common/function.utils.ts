@@ -64,7 +64,7 @@ export async function saveApiCallHistory(
     }
     const query = `
       INSERT INTO ApiCallHistory(historyType, userType, savedId, apiUri, apiName, apiMethod,
-      requestQuery, requestBody, requestPath, response, status, createdAt)
+      requestQuery, requestBody, requestParams, response, status, createdAt)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '활성화', CURRENT_TIMESTAMP)
     `;
     const param = [

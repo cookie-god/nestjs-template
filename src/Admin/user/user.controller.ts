@@ -1,7 +1,6 @@
 import { Controller, Get, Headers, Request } from '@nestjs/common';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiAuthorityCheck } from 'common/function.utils';
-import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { RESPONSE } from '../../../config/response.utils';
 import { AdminGetUsersResponse } from './dto/admin-get-users.response';
 import { UserService } from './user.service';
@@ -47,9 +46,7 @@ export class UserController {
     const payload: Payload = jwtDecode(jwt, true);
 
     // 권한별 유저 접근 확인
-    if (
-      !ApiAuthorityCheck(request.user.authority, ['Master', 'Consultant', 'PM'])
-    ) {
+    if (!ApiAuthorityCheck(payload.authority, ['Master', 'Consultant', 'PM'])) {
       return RESPONSE.CANNOT_ACCESS_BY_AUTHORITY;
     }
     return this.userService.retrieveUsers(payload, request);
