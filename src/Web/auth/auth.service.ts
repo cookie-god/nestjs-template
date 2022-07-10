@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { makeResponse, saveApiCallHistory } from 'common/function.utils';
@@ -13,7 +13,7 @@ import {
   saltHashPassword,
   validatePassword,
 } from '../../../config/security.utils';
-import { Role } from 'common/variable.utils';
+import { Role, Status } from 'common/variable.utils';
 
 @Injectable()
 export class AuthService {
@@ -68,7 +68,7 @@ export class AuthService {
       };
 
       const result = makeResponse(response.SUCCESS, data);
-      await saveApiCallHistory('User', request, result);
+      await saveApiCallHistory(Role.USER, request, result);
 
       return result;
     } catch (error) {
@@ -112,7 +112,7 @@ export class AuthService {
       };
 
       const result = makeResponse(response.SUCCESS, data);
-      await saveApiCallHistory('User', request, result);
+      await saveApiCallHistory(Role.USER, request, result);
 
       // Commit
       await queryRunner.commitTransaction();
@@ -124,6 +124,21 @@ export class AuthService {
       return response.ERROR;
     } finally {
       await queryRunner.release();
+    }
+  }
+
+  async isExistUser(id: number) {
+    try {
+      const admin = await this.userRepository.findOne({
+        where: { id: id, status: Status.ACTIVE },
+      });
+      // 유저가 존재하지 않는 경우
+      if (admin == undefined) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      throw new HttpException(response.ERROR, 200);
     }
   }
 }
