@@ -16,7 +16,6 @@ export class UserController {
    * @param non-exsit
    * @returns GetUsersResponse
    */
-  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '유저 조회 (객체 리스트 리턴)' })
   @ApiHeader({
     description: 'jwt token',
