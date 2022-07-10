@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('ApiCallHistory')
 export class ApiCallHistory {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
   @Column({ length: 45, default: null })
@@ -15,7 +15,7 @@ export class ApiCallHistory {
   savedId: number;
 
   @Column({ length: 255, default: null })
-  apiUrl: string;
+  apiUri: string;
 
   @Column({ length: 255, default: null })
   apiName: string;
@@ -33,7 +33,7 @@ export class ApiCallHistory {
   requestParams: string;
 
   @Column({ type: 'text', default: null })
-  responseParams: string;
+  response: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: string;

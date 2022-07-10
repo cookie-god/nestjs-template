@@ -15,6 +15,7 @@ import {
 } from '../../../config/security.utils';
 import { Authority } from 'src/entity/authority.entity';
 import { AdminSignInResponse } from './dto/admin-sign-in.response';
+import { ROLE } from 'common/variable.utils';
 
 @Injectable()
 export class AuthService {
@@ -72,6 +73,7 @@ export class AuthService {
       const payload: Payload = {
         id: admin.id,
         authority: authority.type,
+        role: ROLE.ADMIN,
       };
 
       //토큰 생성
@@ -143,14 +145,13 @@ export class AuthService {
       const result = makeResponse(response.SUCCESS, data);
       await saveApiCallHistory('Admin', request, result);
 
-      await queryRunner.release();
-
       return result;
     } catch (error) {
       // Rollback
       await queryRunner.rollbackTransaction();
-      await queryRunner.release();
       return response.ERROR;
+    } finally {
+      await queryRunner.release();
     }
   }
 }

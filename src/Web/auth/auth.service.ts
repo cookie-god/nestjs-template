@@ -13,7 +13,7 @@ import {
   saltHashPassword,
   validatePassword,
 } from '../../../config/security.utils';
-import { query } from 'express';
+import { ROLE } from 'common/variable.utils';
 
 @Injectable()
 export class AuthService {
@@ -54,6 +54,7 @@ export class AuthService {
       const payload: Payload = {
         id: user.id,
         email: signInRequest.email,
+        role: ROLE.USER,
       };
 
       //토큰 생성
@@ -115,14 +116,14 @@ export class AuthService {
 
       // Commit
       await queryRunner.commitTransaction();
-      await queryRunner.release();
 
       return result;
     } catch (error) {
       // Rollback
       await queryRunner.rollbackTransaction();
-      await queryRunner.release();
       return response.ERROR;
+    } finally {
+      await queryRunner.release();
     }
   }
 }
