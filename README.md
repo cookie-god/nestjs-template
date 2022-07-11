@@ -111,7 +111,7 @@ PM2 (실 서버)
 시작 명령어
 1. dist 폴더가 있으면 제거
 2. git pull
-3. npm run build를 통해 dist 폴더 생성
+3. npm run build를 통해 build 파일 생성
 4. npm run start:prod
 종료 명령어: pm2 stop main
 
