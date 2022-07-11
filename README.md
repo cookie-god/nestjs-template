@@ -78,6 +78,7 @@
 │   ├── entity                                                    # 데이터베이스 스키마관련 코드
 │   │   ├── admin-info.entity.ts                                  # AdminInfo 스키마 파일
 │   │   ├── admin-salt.entity.ts                                  # AdminSalt 스키마 파일
+│   │   ├── api-call-history.entity.ts                            # ApiCallHistory 스키마 파일
 │   │   ├── authority.entity.ts                                   # Authority 스키마 파일
 │   │   ├── user-info.entity.ts                                   # UserInfo 스키마 파일
 │   │   ├── user-salt.entity.ts                                   # UserSalt 스키마 파일
