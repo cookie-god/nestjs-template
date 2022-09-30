@@ -1,11 +1,10 @@
-export enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
-
 export enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
+}
+
+export enum UserType {
+  USER = 'USER',
 }
 
 export enum HistoryType {

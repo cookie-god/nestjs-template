@@ -3,35 +3,32 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './Web/auth/auth.module';
-import { AdminUserModule } from './Admin/user/user.module';
-import { AdminAuthModule } from './Admin/auth/auth.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ApiCallHistory } from './entity/api-call-history.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: `${__dirname}/../../config/env/.${process.env.NODE_ENV}.env`,
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : 'env.test',
-      ignoreEnvFile: process.env.NODE_ENV === 'prod',
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: process.env.DATABASE_HOST,
       port: 3306,
-      username: 'root',
-      password: 'kooki7869^^',
-      database: 'test',
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       entities: [__dirname + '/**/entity/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: false,
       bigNumberStrings: false,
       charset: 'utf8mb4',
     }),
     TypeOrmModule.forFeature([ApiCallHistory]),
+    UserModule,
     AuthModule,
-    AdminUserModule,
-    AdminAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

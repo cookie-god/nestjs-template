@@ -34,7 +34,7 @@
 .
 ├── common                                                        # 공통적으로 사용하는 로직들이 있는 폴더
 │   ├── logger                                                    # log관련 설정 파일들이 있는 폴더
-│   │   ├── logger.interceptor.ts                                 # logger에 작성될 내용들을 작성한 파일
+│   │   ├── logger.function.ts                                 # logger에 작성될 내용들을 작성한 파일
 │   │   ├── logger.service.ts                                     # logger 종류를 나타낸 파일
 │   ├── variable.utils.ts                                         # 공통적으로 사용되는 변수가 있는 파일
 │   ├── function.utils.ts                                         # 공통적으로 사용되는 함수가 있는 파일
@@ -51,10 +51,10 @@
 │   ├── Admin                                                     # 관리자 페이지 관련 폴더
 │   │   ├── auth                                                  # auth 관련 코드
 │   │   │   ├── dto                                               # dto 폴더
-│   │   │   │   ├── admin-sign-in.request.ts                      # 로그인 Request
-│   │   │   │   ├── admin-sign-in.response.ts                     # 로그인 Response
-│   │   │   │   ├── admin-sign-up.request.ts                      # 회원가입 Request
-│   │   │   │   ├── admin-sign-up.response.ts                     # 회원가입 Response
+│   │   │   │   ├── post-sign-in.request.ts                      # 로그인 Request
+│   │   │   │   ├── post-sign-in.response.ts                     # 로그인 Response
+│   │   │   │   ├── post-sign-up.request.ts                      # 회원가입 Request
+│   │   │   │   ├── post-sign-up.response.ts                     # 회원가입 Response
 │   │   │   ├── jwt                                               # jwt 폴더
 │   │   │   │   ├── jwt.guard.ts                                  # jwt 에러 처리 파일
 │   │   │   │   ├── jwt.payload.ts                                # jwt payload 파일
@@ -67,7 +67,7 @@
 │   │   │   ├── auth.service.spec.ts                              # auth service 파일
 │   │   ├── user                                                  # user 관련 코드
 │   │   │   ├── dto                                               # dto 폴더
-│   │   │   │   ├── admin-get-users.response.ts                   # 관리자 회원조회 response
+│   │   │   │   ├── get-users.response.ts                   # 관리자 회원조회 response
 │   │   │   ├── user.controller.spec.ts                           # user controller 테스트 파일
 │   │   │   ├── user.controller.ts                                # user controller 파일
 │   │   │   ├── user.module.ts                                    # user module 파일

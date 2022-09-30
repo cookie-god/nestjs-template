@@ -8,6 +8,9 @@ export class UserInfo {
   @Column({ length: 40 })
   email: string;
 
+  @Column({ length: 40 })
+  phoneNumber: string;
+
   @Column({ length: 256 })
   password: string;
 

@@ -30,7 +30,7 @@ export class ApiCallHistory {
   requestBody: string;
 
   @Column({ type: 'text', default: null })
-  requestParams: string;
+  requestPath: string;
 
   @Column({ type: 'text', default: null })
   response: string;
