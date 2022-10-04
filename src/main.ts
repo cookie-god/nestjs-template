@@ -5,7 +5,6 @@ import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import * as expressBasicAuth from 'express-basic-auth';
 
 async function bootstrap() {
-  console.log(process.env.DB_USER);
   const app = await NestFactory.create(AppModule);
   app.use(
     ['/docs', '/docs-json'],
