@@ -5,3 +5,4 @@ package-lock.json
 .gitignore
 config/env/.dev.env
 config/env/.local.env
+.idea

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { defaultCurrentDateTime } from 'common/function.utils';
 import { errorLogger } from 'config/logger/logger.function';
 import { Status } from 'common/variable.utils';
-import { RESPONSE } from 'config/response.utils';
 import { DataSource } from 'typeorm';
 import { ApiCallHistory } from './entity/api-call-history.entity';
 const location = __dirname + '/api-save.service.ts';
