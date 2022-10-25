@@ -38,6 +38,7 @@ export class ApiSaveService {
         try {
             const queryRunner = this.connection.createQueryRunner();
             await queryRunner.connect();
+            await queryRunner.startTransaction();
             try {
                 const apiCallHistory = new ApiCallHistory();
                 apiCallHistory.historyType = historyType;
@@ -58,7 +59,6 @@ export class ApiSaveService {
                 if (req.body.confirmPassword) {
                     req.body.confirmPassword = confirmPassword;
                 }
-                await queryRunner.startTransaction();
                 await queryRunner.manager.save(apiCallHistory);
                 await queryRunner.commitTransaction();
             } catch (error) {
