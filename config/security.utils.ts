@@ -1,36 +1,19 @@
-import crypto = require('crypto');
+import * as bcrypt from 'bcrypt';
 
-// salt 값 생성
-export function generateRandomString(length: number) {
-  return crypto
-    .randomBytes(Math.ceil(length / 2))
-    .toString('hex')
-    .slice(0, length);
-}
-
-// 단방향 암호화 설정해서 salt값과 암호화된 비밀번호 리턴
-export function sha512(password: string, salt: string) {
-  const hash = crypto.createHmac('sha512', salt);
-  hash.update(password);
-  const hashedPassword = hash.digest('hex');
+// 비밀번호 암호화 및 소금값 생성
+export async function saltHashPassword(password: string) {
+  const salt = await bcrypt.genSalt();
+  const hashedPassword = await bcrypt.hash(password, salt)
   return {
     salt: salt,
-    hashedPassword: hashedPassword,
+    hashedPassword: hashedPassword
   };
 }
 
-// 단방향 암호화 함수로 전달
-export function saltHashPassword(password: string) {
-  const salt = generateRandomString(16);
-  return sha512(password, salt);
-}
-
 // 비밀번호 검증함수
-export function validatePassword(
+export async function validatePassword(
   password: string,
-  salt: string,
   hashedPassword: string,
 ) {
-  const passwordData = sha512(password, salt);
-  return passwordData.hashedPassword == hashedPassword;
+  return bcrypt.compare(password, hashedPassword);
 }

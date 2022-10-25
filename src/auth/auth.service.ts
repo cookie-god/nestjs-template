@@ -50,9 +50,8 @@ export class AuthService {
 
       // Salt값을 이용해서 현재 입력된 비밀번호와 암호화된 비밀번호 검증
       if (
-        !validatePassword(
+        !await validatePassword(
             postSignInRequest.password,
-            userSalt.salt,
             user.password,
         )
       ) {
@@ -124,7 +123,7 @@ export class AuthService {
         }
 
         // 비밀번호 암호화
-        const securityData = saltHashPassword(postSignUpRequest.password);
+        const securityData = await saltHashPassword(postSignUpRequest.password);
 
         // UserInfo 인스턴스 생성후, 정보 담는 부분
         const userInfo = new UserInfo();
