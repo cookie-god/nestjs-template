@@ -23,7 +23,7 @@ export class AuthController {
 
   /**
    * description : 로그인 API
-   * @param SignInRequest
+   * @param postSignInRequest
    * @returns PostSignInResponse
    */
   @ApiResponse({
@@ -90,7 +90,7 @@ export class AuthController {
 
   /**
    * description : 회원가입 API
-   * @param PostSignUpRequest
+   * @param postSignUpRequest
    * @returns PostSignUpResponse
    */
   @ApiResponse({
@@ -185,7 +185,7 @@ export class AuthController {
 
   /**
    * description : 회원 정보 수정 API
-   * @param SignUpRequest
+   * @param patchAuthInfoRequest
    * @returns BaseResponse
    */
   @ApiResponse({
