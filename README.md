@@ -55,6 +55,7 @@
 │   │   ├── dto                                                   # dto 폴더
 │   │   │   ├── request                                           # Auth Request 폴더
 │   │   │   │   ├── patch-auth-info.request.ts                    # 회원정보 수정 Request 클래스 파일
+│   │   │   │   ├── patch-password.request.ts                     # 회원 비밀번호 재설정 Request 클래스 파일
 │   │   │   │   ├── post-sign-in.request.ts                       # 로그인 Request 클래스 파일
 │   │   │   │   ├── post-sign-up.request.ts                       # 회원가입 Request 클래스 파일
 │   │   │   ├── response                                          # Auth Response 폴더
