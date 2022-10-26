@@ -108,6 +108,4 @@ start: npm run start
 
 dev 환경에서 서버 실행
 dev: npm run dev
-
-prod 환경에서 서버 실행
 ```
