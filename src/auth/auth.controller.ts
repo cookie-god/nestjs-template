@@ -1,6 +1,6 @@
 import {Controller, Post, Request, UseGuards, Patch} from '@nestjs/common';
 import {ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
-import {PostSignIn, PostSignUp, PatchAuthInfo} from '../decorators/auth.decorator';
+import {PostSignIn, PostSignUp, PatchAuthInfo, PatchPassword} from '../decorators/auth.decorator';
 import { AuthService } from './auth.service';
 import { PostSignInResponse } from './dto/response/post-sign-in.response';
 import { PostSignInRequest } from './dto/request/post-sign-in.request';
@@ -12,6 +12,7 @@ import {BaseResponse} from "../../config/base.response";
 import {PatchAuthInfoRequest} from "./dto/request/patch-auth-info.request";
 import {ApiSaveService} from "../api-save.service";
 import {HistoryType, UserType} from "../../common/variable.utils";
+import {PatchPasswordRequest} from "./dto/request/patch-password.request";
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -241,6 +242,85 @@ export class AuthController {
         UserType.USER,
         req.user ? req.user.id : 0,
         '회원 정보 수정 API',
+        req,
+        res,
+    );
+    infoLogger(req, res);
+    return res;
+  }
+
+  /**
+   * description : 회원 비밀번호 재설정 API
+   * @param patchPasswordRequest
+   * @returns BaseResponse
+   */
+  @ApiResponse({
+    status: 1000,
+    description: '성공',
+    type: BaseResponse,
+  })
+  @ApiResponse({
+    status: 2013,
+    description: '존재하지 않는 유저입니다.',
+  })
+  @ApiResponse({
+    status: 2004,
+    description: '이메일을 입력해주세요.',
+  })
+  @ApiResponse({
+    status: 2005,
+    description: '유효하지 않은 이메일 입니다.',
+  })
+  @ApiResponse({
+    status: 2006,
+    description: '비밀번호를 입력해주세요.',
+  })
+  @ApiResponse({
+    status: 2007,
+    description: '유효하지 않은 비밀번호 입니다.',
+  })
+  @ApiResponse({
+    status: 2008,
+    description: '확인 비밀번호를 입력해주세요.',
+  })
+  @ApiResponse({
+    status: 2009,
+    description: '유효하지 않은 확인 비밀번호 입니다.',
+  })
+  @ApiResponse({
+    status: 2010,
+    description: '확인 비밀번호와 일치하지 않습니다.',
+  })
+  @ApiResponse({
+    status: 2015,
+    description: '핸드폰 번호를 입력해주세요.',
+  })
+  @ApiResponse({
+    status: 2016,
+    description: '유효하지 않은 핸드폰 번호입니다.',
+  })
+  @ApiResponse({
+    status: 4000,
+    description: '서버 에러',
+  })
+  @ApiOperation({ summary: '회원 비밀번호 재설정 API' })
+  @ApiBody({ description: '회원 비밀번호 재설정 DTO', type: PatchPasswordRequest })
+  @Patch('v1/password')
+  async patchUserPassword(@Request() req, @PatchPassword() patchPasswordRequest: PatchPasswordRequest) {
+    await this.apiSaveService.saveApiCallHistory(
+        HistoryType.UPDATE,
+        UserType.USER,
+        req.user ? req.user.id : 0,
+        '회원 비밀번호 재설정 API',
+        req,
+        null,
+    );
+    const res = await this.authService.editPassword(patchPasswordRequest);
+    await this.apiSaveService.saveApiCallHistory(
+        HistoryType.UPDATE,
+        UserType.USER,
+        req.user ? req.user.id : 0,
+        '회원 비밀번호 재설정 API',
         req,
         res,
     );

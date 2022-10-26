@@ -78,3 +78,37 @@ export const PatchAuthInfo = createParamDecorator(
     return patchAuthInfoData;
     },
 );
+
+export const PatchPassword = createParamDecorator(
+    (data: unknown, ctx: ExecutionContext) => {
+        const patchUserPasswordData = ctx.switchToHttp().getRequest().body;
+        if (!patchUserPasswordData.email) {
+            throw new HttpException(RESPONSE.EMPTY_EMAIL, 201);
+        }
+        if (!regularExp.emailRegex.test(patchUserPasswordData.email)) {
+            throw new HttpException(RESPONSE.INVALID_EMAIL, 201);
+        }
+        if (!patchUserPasswordData.password) {
+            throw new HttpException(RESPONSE.EMPTY_PASSWORD, 201);
+        }
+        if (!regularExp.passwordRegex.test(patchUserPasswordData.password)) {
+            throw new HttpException(RESPONSE.INVALID_PASSWORD, 201);
+        }
+        if (!patchUserPasswordData.confirmPassword) {
+            throw new HttpException(RESPONSE.EMPTY_CONFIRM_PASSWORD, 201);
+        }
+        if (!regularExp.passwordRegex.test(patchUserPasswordData.confirmPassword)) {
+            throw new HttpException(RESPONSE.INVALID_CONFIRM_PASSWORD, 201);
+        }
+        if (patchUserPasswordData.password !== patchUserPasswordData.confirmPassword) {
+            throw new HttpException(RESPONSE.NOT_MATCH_CONFIRM_PASSWORD, 201);
+        }
+        if (!patchUserPasswordData.phoneNumber) {
+            throw new HttpException(RESPONSE.EMPTY_PHONE_NUMBER, 201);
+        }
+        if (!regularExp.phoneNumberRegex.test(patchUserPasswordData.phoneNumber)) {
+            throw new HttpException(RESPONSE.INVALID_PHONE_NUMBER, 201);
+        }
+        return patchUserPasswordData;
+    },
+);

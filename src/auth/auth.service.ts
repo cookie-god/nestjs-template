@@ -16,6 +16,7 @@ import { PostSignInRequest } from './dto/request/post-sign-in.request';
 import { PostSignUpRequest } from './dto/request/post-sign-up.request';
 import {errorLogger} from "../../config/logger/logger.function";
 import {PatchAuthInfoRequest} from "./dto/request/patch-auth-info.request";
+import {PatchPasswordRequest} from "./dto/request/patch-password.request";
 const location = __dirname + '/auth.service.ts';
 let currentFunction;
 
@@ -198,6 +199,59 @@ export class AuthService {
         user.nickname = patchAuthInfo.nickname;
         user.updatedAt = defaultCurrentDateTime();
         await queryRunner.manager.update(UserInfo, {id: user.id}, user)
+
+        // Commit
+        await queryRunner.commitTransaction();
+        const result = makeResponse(RESPONSE.SUCCESS, undefined);
+
+        return result;
+      } catch (error) {
+        // Rollback
+        await queryRunner.rollbackTransaction();
+        errorLogger(error, location, currentFunction);
+        return RESPONSE.ERROR;
+      } finally {
+        await queryRunner.release();
+      }
+    } catch (error) {
+      errorLogger(error, location, currentFunction);
+    }
+  }
+
+  async editPassword(patchUserPasswordRequest: PatchPasswordRequest) {
+    currentFunction = 'editPassword'
+    try {
+      const queryRunner = this.connection.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      try {
+        // 유저 정보 조회
+        const user = await this.userRepository.findOne({
+          where: {
+            email: patchUserPasswordRequest.email,
+            phoneNumber: patchUserPasswordRequest.phoneNumber,
+            status: Status.ACTIVE,
+          },
+        });
+        if (!user) {
+          return RESPONSE.NON_EXIST_USER;
+        }
+
+        // 비밀번호 암호화
+        const securityData = await saltHashPassword(patchUserPasswordRequest.password);
+
+        // 유저 정보 수정
+        user.password = securityData.hashedPassword;
+        user.updatedAt = defaultCurrentDateTime();
+        await queryRunner.manager.update(UserInfo, {id: user.id}, user)
+
+        // 유저 소금값 조회 및 업데이트
+        const userSalt = await this.userSaltRepository.findOne({
+          where: { userId: user.id },
+        });
+        userSalt.salt = securityData.salt;
+
+        await queryRunner.manager.update(UserSalt, { userId: user.id }, userSalt);
 
         // Commit
         await queryRunner.commitTransaction();
