@@ -81,34 +81,34 @@ export const PatchAuthInfo = createParamDecorator(
 
 export const PatchPassword = createParamDecorator(
     (data: unknown, ctx: ExecutionContext) => {
-        const patchUserPasswordData = ctx.switchToHttp().getRequest().body;
-        if (!patchUserPasswordData.email) {
+        const patchPasswordData = ctx.switchToHttp().getRequest().body;
+        if (!patchPasswordData.email) {
             throw new HttpException(RESPONSE.EMPTY_EMAIL, 201);
         }
-        if (!regularExp.emailRegex.test(patchUserPasswordData.email)) {
+        if (!regularExp.emailRegex.test(patchPasswordData.email)) {
             throw new HttpException(RESPONSE.INVALID_EMAIL, 201);
         }
-        if (!patchUserPasswordData.password) {
+        if (!patchPasswordData.password) {
             throw new HttpException(RESPONSE.EMPTY_PASSWORD, 201);
         }
-        if (!regularExp.passwordRegex.test(patchUserPasswordData.password)) {
+        if (!regularExp.passwordRegex.test(patchPasswordData.password)) {
             throw new HttpException(RESPONSE.INVALID_PASSWORD, 201);
         }
-        if (!patchUserPasswordData.confirmPassword) {
+        if (!patchPasswordData.confirmPassword) {
             throw new HttpException(RESPONSE.EMPTY_CONFIRM_PASSWORD, 201);
         }
-        if (!regularExp.passwordRegex.test(patchUserPasswordData.confirmPassword)) {
+        if (!regularExp.passwordRegex.test(patchPasswordData.confirmPassword)) {
             throw new HttpException(RESPONSE.INVALID_CONFIRM_PASSWORD, 201);
         }
-        if (patchUserPasswordData.password !== patchUserPasswordData.confirmPassword) {
+        if (patchPasswordData.password !== patchPasswordData.confirmPassword) {
             throw new HttpException(RESPONSE.NOT_MATCH_CONFIRM_PASSWORD, 201);
         }
-        if (!patchUserPasswordData.phoneNumber) {
+        if (!patchPasswordData.phoneNumber) {
             throw new HttpException(RESPONSE.EMPTY_PHONE_NUMBER, 201);
         }
-        if (!regularExp.phoneNumberRegex.test(patchUserPasswordData.phoneNumber)) {
+        if (!regularExp.phoneNumberRegex.test(patchPasswordData.phoneNumber)) {
             throw new HttpException(RESPONSE.INVALID_PHONE_NUMBER, 201);
         }
-        return patchUserPasswordData;
+        return patchPasswordData;
     },
 );
