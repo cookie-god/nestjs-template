@@ -79,6 +79,19 @@ export const PatchAuthInfo = createParamDecorator(
     },
 );
 
+export const PostSearchEmail = createParamDecorator(
+    (data: unknown, ctx: ExecutionContext) => {
+        const postSearchEmailData = ctx.switchToHttp().getRequest().body;
+        if (!postSearchEmailData.phoneNumber) {
+            throw new HttpException(RESPONSE.EMPTY_PHONE_NUMBER, 201);
+        }
+        if (!regularExp.phoneNumberRegex.test(postSearchEmailData.phoneNumber)) {
+            throw new HttpException(RESPONSE.INVALID_PHONE_NUMBER, 201);
+        }
+        return postSearchEmailData;
+    },
+);
+
 export const PatchPassword = createParamDecorator(
     (data: unknown, ctx: ExecutionContext) => {
         const patchPasswordData = ctx.switchToHttp().getRequest().body;

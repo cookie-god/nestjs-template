@@ -1,6 +1,6 @@
 import {Controller, Post, Request, UseGuards, Patch} from '@nestjs/common';
 import {ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
-import {PostSignIn, PostSignUp, PatchAuthInfo, PatchPassword} from '../decorators/auth.decorator';
+import {PostSignIn, PostSignUp, PatchAuthInfo, PatchPassword, PostSearchEmail} from '../decorators/auth.decorator';
 import { AuthService } from './auth.service';
 import { PostSignInResponse } from './dto/response/post-sign-in.response';
 import { PostSignInRequest } from './dto/request/post-sign-in.request';
@@ -13,6 +13,8 @@ import {PatchAuthInfoRequest} from "./dto/request/patch-auth-info.request";
 import {ApiSaveService} from "../api-save.service";
 import {HistoryType, UserType} from "../../common/variable.utils";
 import {PatchPasswordRequest} from "./dto/request/patch-password.request";
+import {PostSearchEmailRequest} from "./dto/request/post-search-email.request";
+import {PostSearchEmailResponse} from "./dto/response/post-search-email.response";
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -250,6 +252,57 @@ export class AuthController {
   }
 
   /**
+   * description : 이메일 찾기 API
+   * @param postSearchUserEmailRequest
+   * @returns PostSearchEmailResponse
+   */
+  @ApiResponse({
+    status: 1000,
+    description: '성공',
+    type: PostSearchEmailResponse,
+  })
+  @ApiResponse({
+    status: 2013,
+    description: '존재하지 않는 유저입니다.',
+  })
+  @ApiResponse({
+    status: 2015,
+    description: '핸드폰 번호를 입력해주세요.',
+  })
+  @ApiResponse({
+    status: 2016,
+    description: '유효하지 않은 핸드폰 번호입니다.',
+  })
+  @ApiResponse({
+    status: 4000,
+    description: '서버 에러',
+  })
+  @ApiOperation({ summary: '이메일 찾기 API' })
+  @ApiBody({ description: '이메일 찾기 DTO', type: PostSearchEmailRequest })
+  @Post('v1/search-email')
+  async postSearchEmail(@Request() req, @PostSearchEmail() postSearchEmailRequest: PostSearchEmailRequest) {
+    await this.apiSaveService.saveApiCallHistory(
+        HistoryType.UPDATE,
+        UserType.USER,
+        req.user ? req.user.id : 0,
+        '이메일 찾기 API',
+        req,
+        null,
+    );
+    const res = await this.authService.searchEmail(postSearchEmailRequest);
+    await this.apiSaveService.saveApiCallHistory(
+        HistoryType.UPDATE,
+        UserType.USER,
+        req.user ? req.user.id : 0,
+        '이메일 찾기 API',
+        req,
+        res,
+    );
+    infoLogger(req, res);
+    return res;
+  }
+
+  /**
    * description : 회원 비밀번호 재설정 API
    * @param patchPasswordRequest
    * @returns BaseResponse
@@ -306,7 +359,7 @@ export class AuthController {
   @ApiOperation({ summary: '회원 비밀번호 재설정 API' })
   @ApiBody({ description: '회원 비밀번호 재설정 DTO', type: PatchPasswordRequest })
   @Patch('v1/password')
-  async patchUserPassword(@Request() req, @PatchPassword() patchPasswordRequest: PatchPasswordRequest) {
+  async patchPassword(@Request() req, @PatchPassword() patchPasswordRequest: PatchPasswordRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
