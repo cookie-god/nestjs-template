@@ -17,6 +17,7 @@ import { PostSignUpRequest } from './dto/request/post-sign-up.request';
 import {errorLogger} from "../../config/logger/logger.function";
 import {PatchAuthInfoRequest} from "./dto/request/patch-auth-info.request";
 import {PatchPasswordRequest} from "./dto/request/patch-password.request";
+import {PostSearchEmailRequest} from "./dto/request/post-search-email.request";
 const location = __dirname + '/auth.service.ts';
 let currentFunction;
 
@@ -39,7 +40,7 @@ export class AuthService {
         where: { email: postSignInRequest.email, status: 'ACTIVE' },
       });
 
-      // 존재하지 않는 관리자 체크
+      // 유저 정보 조회
       if (user == undefined) {
         return RESPONSE.NON_EXIST_EMAIL;
       }
@@ -215,6 +216,32 @@ export class AuthService {
       }
     } catch (error) {
       errorLogger(error, location, currentFunction);
+    }
+  }
+
+  async searchEmail(postSearchEmailRequest: PostSearchEmailRequest) {
+    currentFunction = 'searchEmail'
+    try {
+      // 입력한 이메일에 해당하는 유저값 추출
+      const user = await this.userRepository.findOne({
+        where: { phoneNumber: postSearchEmailRequest.phoneNumber, status: 'ACTIVE' },
+      });
+
+      // 유저 정보 조회
+      if (user == undefined) {
+        return RESPONSE.NON_EXIST_USER;
+      }
+
+      // Response의 result 객체에 Data를 담는 부분
+      const data = {
+        email: user.email,
+      };
+
+      const result = makeResponse(RESPONSE.SUCCESS, data);
+      return result;
+    } catch (error) {
+      errorLogger(error, location, currentFunction);
+      return RESPONSE.ERROR;
     }
   }
 
