@@ -11,7 +11,7 @@ async function bootstrap() {
     expressBasicAuth({
       challenge: true,
       users: {
-        softsquared: secret.swagger_password,
+        cookie: secret.swagger_password,
       },
     }),
   );
