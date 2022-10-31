@@ -17,8 +17,8 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('소프트스퀘어드 NestJS 템플릿')
-    .setDescription('소프트스퀘어드 NestJS 템플릿 스웨거입니다.')
+    .setTitle('쿠키의 NestJS 템플릿')
+    .setDescription('NestJS 템플릿 스웨거입니다.')
     .setVersion('1.0.0')
     .build();
 
