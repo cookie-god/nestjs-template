@@ -5,46 +5,48 @@ import {
 } from '@nestjs/common';
 import { regularExp } from 'config/regularExp';
 import { RESPONSE } from 'config/response.utils';
+import {GetUsersRequest} from "../user/dto/request/get-users.request";
+import {GetUsersDetailRequest} from "../user/dto/request/get-users-detail.request";
 
 // User관련 데코레이터
 export const GetUsers = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-      const getUsersData = ctx.switchToHttp().getRequest().query;
-      if (!getUsersData.page) {
+      const getUsersQueryData: GetUsersRequest = ctx.switchToHttp().getRequest().query;
+      if (!getUsersQueryData.page) {
           throw new HttpException(RESPONSE.PAGE_EMPTY, 200);
       }
-      if (getUsersData.page <= 0) {
+      if (getUsersQueryData.page <= 0) {
           throw new HttpException(RESPONSE.INVALID_PAGE, 200);
       }
-      if (!getUsersData.size) {
+      if (!getUsersQueryData.size) {
           throw new HttpException(RESPONSE.PAGE_SIZE_EMPTY, 200);
       }
-      if (getUsersData.size <= 0) {
+      if (getUsersQueryData.size <= 0) {
           throw new HttpException(RESPONSE.INVALID_PAGE_SIZE, 200);
       }
-      if (!getUsersData.sortType) {
+      if (!getUsersQueryData.sortType) {
           throw new HttpException(RESPONSE.SORT_TYPE_EMPTY, 200);
       }
-      if (getUsersData.sortType !== 'desc' && getUsersData.sortType !== 'asc') {
+      if (getUsersQueryData.sortType !== 'desc' && getUsersQueryData.sortType !== 'asc') {
           throw new HttpException(RESPONSE.INVALID_SORT_TYPE, 200);
       }
 
-      return getUsersData;
+      return getUsersQueryData;
   },
 );
 
 export const GetUsersDetail = createParamDecorator(
     (data: unknown, ctx: ExecutionContext) => {
-    const getUsersDetailData = ctx.switchToHttp().getRequest().params;
-    if (!getUsersDetailData.userId) {
+    const getUsersDetailParamsData: GetUsersDetailRequest = ctx.switchToHttp().getRequest().params;
+    if (!getUsersDetailParamsData.userId) {
         throw new HttpException(RESPONSE.EMPTY_USER_ID, 200);
     }
     if (
-        getUsersDetailData.userId <= 0 ||
-        isNaN(parseInt(getUsersDetailData.userId))
+        getUsersDetailParamsData.userId <= 0 ||
+        isNaN(getUsersDetailParamsData.userId)
     ) {
         throw new HttpException(RESPONSE.INVALID_USER_ID, 200);
     }
-    return getUsersDetailData;
+    return getUsersDetailParamsData;
   },
 );

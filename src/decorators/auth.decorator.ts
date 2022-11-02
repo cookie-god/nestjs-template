@@ -5,123 +5,128 @@ import {
 } from '@nestjs/common';
 import { regularExp } from 'config/regularExp';
 import { RESPONSE } from 'config/response.utils';
+import {PostSignInRequest} from "../auth/dto/request/post-sign-in.request";
+import {PostSignUpRequest} from "../auth/dto/request/post-sign-up.request";
+import {PatchAuthInfoRequest} from "../auth/dto/request/patch-auth-info.request";
+import {PostSearchEmailRequest} from "../auth/dto/request/post-search-email.request";
+import {PatchPasswordRequest} from "../auth/dto/request/patch-password.request";
 
 // Auth관련 데코레이터
 export const PostSignIn = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    const postSignInData = ctx.switchToHttp().getRequest().body;
-    if (!postSignInData.email) {
+    const postSignInBodyData: PostSignInRequest = ctx.switchToHttp().getRequest().body;
+    if (!postSignInBodyData.email) {
       throw new HttpException(RESPONSE.EMPTY_EMAIL, 201);
     }
-    if (!regularExp.emailRegex.test(postSignInData.email)) {
+    if (!regularExp.emailRegex.test(postSignInBodyData.email)) {
       throw new HttpException(RESPONSE.INVALID_EMAIL, 201);
     }
-    if (!postSignInData.password) {
+    if (!postSignInBodyData.password) {
       throw new HttpException(RESPONSE.EMPTY_PASSWORD, 201);
     }
-    if (!regularExp.passwordRegex.test(postSignInData.password)) {
+    if (!regularExp.passwordRegex.test(postSignInBodyData.password)) {
       throw new HttpException(RESPONSE.INVALID_PASSWORD, 201);
     }
-    return postSignInData;
+    return postSignInBodyData;
   },
 );
 
 export const PostSignUp = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    const postSignUpData = ctx.switchToHttp().getRequest().body;
-    if (!postSignUpData.email) {
+    const postSignUpBodyData: PostSignUpRequest = ctx.switchToHttp().getRequest().body;
+    if (!postSignUpBodyData.email) {
       throw new HttpException(RESPONSE.EMPTY_EMAIL, 201);
     }
-    if (!regularExp.emailRegex.test(postSignUpData.email)) {
+    if (!regularExp.emailRegex.test(postSignUpBodyData.email)) {
       throw new HttpException(RESPONSE.INVALID_EMAIL, 201);
     }
-    if (!postSignUpData.password) {
+    if (!postSignUpBodyData.password) {
       throw new HttpException(RESPONSE.EMPTY_PASSWORD, 201);
     }
-    if (!regularExp.passwordRegex.test(postSignUpData.password)) {
+    if (!regularExp.passwordRegex.test(postSignUpBodyData.password)) {
       throw new HttpException(RESPONSE.INVALID_PASSWORD, 201);
     }
-    if (!postSignUpData.confirmPassword) {
+    if (!postSignUpBodyData.confirmPassword) {
       throw new HttpException(RESPONSE.EMPTY_CONFIRM_PASSWORD, 201);
     }
-    if (!regularExp.passwordRegex.test(postSignUpData.confirmPassword)) {
+    if (!regularExp.passwordRegex.test(postSignUpBodyData.confirmPassword)) {
       throw new HttpException(RESPONSE.INVALID_CONFIRM_PASSWORD, 201);
     }
-    if (postSignUpData.password !== postSignUpData.confirmPassword) {
+    if (postSignUpBodyData.password !== postSignUpBodyData.confirmPassword) {
       throw new HttpException(RESPONSE.NOT_MATCH_CONFIRM_PASSWORD, 201);
     }
-    if (!postSignUpData.phoneNumber) {
+    if (!postSignUpBodyData.phoneNumber) {
       throw new HttpException(RESPONSE.EMPTY_PHONE_NUMBER, 201);
     }
-    if (!regularExp.phoneNumberRegex.test(postSignUpData.phoneNumber)) {
+    if (!regularExp.phoneNumberRegex.test(postSignUpBodyData.phoneNumber)) {
       throw new HttpException(RESPONSE.INVALID_PHONE_NUMBER, 201);
     }
-    if (!postSignUpData.nickname) {
+    if (!postSignUpBodyData.nickname) {
       throw new HttpException(RESPONSE.EMPTY_NICKNAME, 201);
     }
-    if (postSignUpData.nickname.length > 20) {
+    if (postSignUpBodyData.nickname.length > 20) {
       throw new HttpException(RESPONSE.INVALID_NICKNAME, 201);
     }
-    return postSignUpData;
+    return postSignUpBodyData;
   },
 );
 
 export const PatchAuthInfo = createParamDecorator(
     (data: unknown, ctx: ExecutionContext) => {
-    const patchAuthInfoData = ctx.switchToHttp().getRequest().body;
-    if (!patchAuthInfoData.nickname) {
+    const patchAuthInfoBodyData: PatchAuthInfoRequest = ctx.switchToHttp().getRequest().body;
+    if (!patchAuthInfoBodyData.nickname) {
         throw new HttpException(RESPONSE.EMPTY_NICKNAME, 201);
     }
-    if (patchAuthInfoData.nickname.length > 20) {
+    if (patchAuthInfoBodyData.nickname.length > 20) {
         throw new HttpException(RESPONSE.INVALID_NICKNAME, 201);
     }
-    return patchAuthInfoData;
+    return patchAuthInfoBodyData;
     },
 );
 
 export const PostSearchEmail = createParamDecorator(
     (data: unknown, ctx: ExecutionContext) => {
-        const postSearchEmailData = ctx.switchToHttp().getRequest().body;
-        if (!postSearchEmailData.phoneNumber) {
+        const postSearchEmailBodyData: PostSearchEmailRequest = ctx.switchToHttp().getRequest().body;
+        if (!postSearchEmailBodyData.phoneNumber) {
             throw new HttpException(RESPONSE.EMPTY_PHONE_NUMBER, 201);
         }
-        if (!regularExp.phoneNumberRegex.test(postSearchEmailData.phoneNumber)) {
+        if (!regularExp.phoneNumberRegex.test(postSearchEmailBodyData.phoneNumber)) {
             throw new HttpException(RESPONSE.INVALID_PHONE_NUMBER, 201);
         }
-        return postSearchEmailData;
+        return postSearchEmailBodyData;
     },
 );
 
 export const PatchPassword = createParamDecorator(
     (data: unknown, ctx: ExecutionContext) => {
-        const patchPasswordData = ctx.switchToHttp().getRequest().body;
-        if (!patchPasswordData.email) {
+        const patchPasswordBodyData: PatchPasswordRequest = ctx.switchToHttp().getRequest().body;
+        if (!patchPasswordBodyData.email) {
             throw new HttpException(RESPONSE.EMPTY_EMAIL, 201);
         }
-        if (!regularExp.emailRegex.test(patchPasswordData.email)) {
+        if (!regularExp.emailRegex.test(patchPasswordBodyData.email)) {
             throw new HttpException(RESPONSE.INVALID_EMAIL, 201);
         }
-        if (!patchPasswordData.password) {
+        if (!patchPasswordBodyData.password) {
             throw new HttpException(RESPONSE.EMPTY_PASSWORD, 201);
         }
-        if (!regularExp.passwordRegex.test(patchPasswordData.password)) {
+        if (!regularExp.passwordRegex.test(patchPasswordBodyData.password)) {
             throw new HttpException(RESPONSE.INVALID_PASSWORD, 201);
         }
-        if (!patchPasswordData.confirmPassword) {
+        if (!patchPasswordBodyData.confirmPassword) {
             throw new HttpException(RESPONSE.EMPTY_CONFIRM_PASSWORD, 201);
         }
-        if (!regularExp.passwordRegex.test(patchPasswordData.confirmPassword)) {
+        if (!regularExp.passwordRegex.test(patchPasswordBodyData.confirmPassword)) {
             throw new HttpException(RESPONSE.INVALID_CONFIRM_PASSWORD, 201);
         }
-        if (patchPasswordData.password !== patchPasswordData.confirmPassword) {
+        if (patchPasswordBodyData.password !== patchPasswordBodyData.confirmPassword) {
             throw new HttpException(RESPONSE.NOT_MATCH_CONFIRM_PASSWORD, 201);
         }
-        if (!patchPasswordData.phoneNumber) {
+        if (!patchPasswordBodyData.phoneNumber) {
             throw new HttpException(RESPONSE.EMPTY_PHONE_NUMBER, 201);
         }
-        if (!regularExp.phoneNumberRegex.test(patchPasswordData.phoneNumber)) {
+        if (!regularExp.phoneNumberRegex.test(patchPasswordBodyData.phoneNumber)) {
             throw new HttpException(RESPONSE.INVALID_PHONE_NUMBER, 201);
         }
-        return patchPasswordData;
+        return patchPasswordBodyData;
     },
 );
