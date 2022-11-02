@@ -47,10 +47,10 @@
 │   ├── response.utils.ts                                         # response status들이 작성되어 있는 파일
 │   ├── secret.ts                                                 # 서버에서 비밀리에 관리되어야 하는 키값들이 담긴 파일
 │   ├── security.utils.ts                                         # 비밀번호 암호화 및 인증 함수가 담긴 파일
-├── dist                   	                                      # 빌드시 생성되는 dist 폴더
-├── logs                   	                                      # log 폴더
+├── dist                   	                                    # 빌드시 생성되는 dist 폴더
+├── logs                   	                                    # log 폴더
 ├── node_modules                   	                              # 노드 모듈
-├── src                                                           # 소스 코드 폴더                                                  # 관리자 페이지 관련 폴더
+├── src                                                           # 소스 코드 폴더
 │   ├── auth                                                      # Auth 관련 코드
 │   │   ├── dto                                                   # dto 폴더
 │   │   │   ├── request                                           # Auth Request 폴더
