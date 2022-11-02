@@ -70,6 +70,10 @@ export class UserService {
             this.userQuery.retrieveUserById(getUsersDetailRequest)
         )
 
+        if (!user) {
+          return RESPONSE.NON_EXIST_USER;
+        }
+
         const result = makeResponse(RESPONSE.SUCCESS, user);
 
         return result;
