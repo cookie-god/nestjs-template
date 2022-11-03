@@ -77,7 +77,7 @@ export class UserController {
   @ApiOperation({ summary: '유저 조회 API' })
   @UseGuards(JwtAuthGuard)
   @Get('/v1')
-  async getUsers(@GetUsers() getUsersRequest: GetUsersRequest, @Request() req) {
+  async getUsers(@GetUsers() getUsersRequest: GetUsersRequest, @Request() req: any) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.READ,
         UserType.USER,
@@ -134,7 +134,7 @@ export class UserController {
   @ApiOperation({ summary: '유저 상세 조회 API' })
   @UseGuards(JwtAuthGuard)
   @Get('/v1/:userId')
-  async getUsersDetail(@GetUsersDetail() getUsersDetailRequest: GetUsersDetailRequest, @Request() req) {
+  async getUsersDetail(@GetUsersDetail() getUsersDetailRequest: GetUsersDetailRequest, @Request() req: any) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.READ,
         UserType.USER,

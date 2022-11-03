@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RESPONSE } from 'config/response.utils';
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  handleRequest(err, user) {
+  handleRequest(err: any, user: any) {
     // 검증 Error로 존재하지 않는 유저임을 확인
     if (err != null) {
       throw new HttpException(RESPONSE.NON_EXIST_USER, 201);

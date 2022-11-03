@@ -15,7 +15,7 @@ export function infoLogger(req: any, res: any) {
   );
 }
 
-export function infoLoggerWithoutReq(message) {
+export function infoLoggerWithoutReq(message: string) {
   const loggerService = new LoggerService();
 
   loggerService.log(

@@ -69,7 +69,7 @@ export class AuthController {
   @ApiOperation({ summary: '로그인 API' })
   @ApiBody({ description: '로그인 DTO', type: PostSignInRequest })
   @Post('v1/sign-in')
-  async postSignIn(@Request() req, @PostSignIn() postSignInRequest: PostSignInRequest) {
+  async postSignIn(@Request() req: any, @PostSignIn() postSignInRequest: PostSignInRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.READ,
         UserType.USER,
@@ -164,7 +164,7 @@ export class AuthController {
   @ApiOperation({ summary: '회원가입 API' })
   @ApiBody({ description: '회원가입 DTO', type: PostSignUpRequest })
   @Post('v1/sign-up')
-  async postSignUp(@Request() req, @PostSignUp() postSignUpRequest: PostSignUpRequest) {
+  async postSignUp(@Request() req: any, @PostSignUp() postSignUpRequest: PostSignUpRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.CREATE,
         UserType.USER,
@@ -229,7 +229,7 @@ export class AuthController {
   })
   @ApiBody({ description: '회원 정보 수정 DTO', type: PatchAuthInfoRequest })
   @Patch('v1')
-  async patchAuthInfo(@Request() req, @PatchAuthInfo() patchAuthInfoRequest: PatchAuthInfoRequest) {
+  async patchAuthInfo(@Request() req: any, @PatchAuthInfo() patchAuthInfoRequest: PatchAuthInfoRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
@@ -280,7 +280,7 @@ export class AuthController {
   @ApiOperation({ summary: '이메일 찾기 API' })
   @ApiBody({ description: '이메일 찾기 DTO', type: PostSearchEmailRequest })
   @Post('v1/search-email')
-  async postSearchEmail(@Request() req, @PostSearchEmail() postSearchEmailRequest: PostSearchEmailRequest) {
+  async postSearchEmail(@Request() req: any, @PostSearchEmail() postSearchEmailRequest: PostSearchEmailRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
@@ -359,7 +359,7 @@ export class AuthController {
   @ApiOperation({ summary: '회원 비밀번호 재설정 API' })
   @ApiBody({ description: '회원 비밀번호 재설정 DTO', type: PatchPasswordRequest })
   @Patch('v1/password')
-  async patchPassword(@Request() req, @PatchPassword() patchPasswordRequest: PatchPasswordRequest) {
+  async patchPassword(@Request() req: any, @PatchPassword() patchPasswordRequest: PatchPasswordRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
@@ -410,7 +410,7 @@ export class AuthController {
     example: 'JWT TOKEN',
   })
   @Patch('v1/status')
-  async patchAuthStatus(@Request() req) {
+  async patchAuthStatus(@Request() req: any) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.DELETE,
         UserType.USER,
