@@ -37,7 +37,7 @@ class User {
   nickname: string;
 
   @ApiProperty({
-    example: '2022-05-27T02:06:44.000Z',
+    example: '2022-10-25 15:43:53',
     description: '생성 날짜',
     required: true,
   })

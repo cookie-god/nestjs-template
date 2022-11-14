@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { makeResponse } from 'common/function.utils';
+import {makeKSTToYYYYMMDDHHIISS, makeResponse} from 'common/function.utils';
 import { RESPONSE } from 'config/response.utils';
 import { UserInfo } from 'src/entity/user-info.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -34,6 +34,10 @@ export class UserService {
             ).retrieveUsersQuery,
         );
 
+        for (const item of users) {
+          item.createdAt = makeKSTToYYYYMMDDHHIISS(item.createdAt);
+        }
+
         const totalCount = await queryRunner.query(
             this.userQuery.retrieveUsers(
                 getUsersRequest,
@@ -53,7 +57,7 @@ export class UserService {
         errorLogger(error, location, currentFunction);
         return RESPONSE.ERROR;
       } finally {
-        queryRunner.release();
+        await queryRunner.release();
       }
     } catch (error) {
       errorLogger(error, location, currentFunction);
@@ -74,6 +78,7 @@ export class UserService {
           return RESPONSE.NON_EXIST_USER;
         }
 
+        user.createdAt = makeKSTToYYYYMMDDHHIISS(user.createdAt);
         const result = makeResponse(RESPONSE.SUCCESS, user);
 
         return result;
@@ -81,7 +86,7 @@ export class UserService {
         errorLogger(error, location, currentFunction);
         return RESPONSE.ERROR;
       } finally {
-        queryRunner.release();
+        await queryRunner.release();
       }
     } catch (error) {
       errorLogger(error, location, currentFunction);
