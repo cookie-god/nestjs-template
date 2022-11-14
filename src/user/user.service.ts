@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {makeKSTToYYYYMMDDHHIISS, makeResponse} from 'common/function.utils';
+import {makeKSTToDateComponent, makeResponse} from 'common/function.utils';
 import { RESPONSE } from 'config/response.utils';
 import { UserInfo } from 'src/entity/user-info.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -34,8 +34,10 @@ export class UserService {
             ).retrieveUsersQuery,
         );
 
+        let dateFormat
         for (const item of users) {
-          item.createdAt = makeKSTToYYYYMMDDHHIISS(item.createdAt);
+          dateFormat = makeKSTToDateComponent(item.createdAt)
+          item.createdAt = `${dateFormat.year}-${dateFormat.month}-${dateFormat.day} ${dateFormat.hour}:${dateFormat.min}:${dateFormat.sec}`;
         }
 
         const totalCount = await queryRunner.query(
@@ -78,7 +80,8 @@ export class UserService {
           return RESPONSE.NON_EXIST_USER;
         }
 
-        user.createdAt = makeKSTToYYYYMMDDHHIISS(user.createdAt);
+        const dateFormat = makeKSTToDateComponent(user.createdAt)
+        user.createdAt = `${dateFormat.year}-${dateFormat.month}-${dateFormat.day} ${dateFormat.hour}:${dateFormat.min}:${dateFormat.sec}`;
         const result = makeResponse(RESPONSE.SUCCESS, user);
 
         return result;

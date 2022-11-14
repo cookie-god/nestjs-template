@@ -83,34 +83,25 @@ export function defaultCurrentDateTime() {
 }
 
 /**
- * description : KST to yyyy-mm-dd 형식으로 변경해주는 함수
+ * description : KST to dateFormat 형식으로 변경해주는 함수
  * @param utc
- * @returns string
+ * @returns object
  */
-export function makeKSTToYYYYMMDD(utc: string) {
+export function makeKSTToDateComponent(utc: string) {
     const timestamp = new Date(utc.toString());
     const year = timestamp.getFullYear();
-    const month =
-        timestamp.getMonth() + 1 < 10 ? '0' + (timestamp.getMonth() + 1).toString() : (timestamp.getMonth() + 1).toString();
-    const day = timestamp.getDate() < 10 ? '0' + timestamp.getDate().toString() : timestamp.getDate().toString();
-
-    return `${year}-${month}-${day}`;
-}
-
-/**
- * description : KST to yyyy-mm-dd 형식으로 변경해주는 함수
- * @param utc
- * @returns string
- */
-export function makeKSTToYYYYMMDDHHIISS(utc: string) {
-    const timestamp = new Date(utc.toString());
-    const year = timestamp.getFullYear();
-    const month =
-        timestamp.getMonth() + 1 < 10 ? '0' + (timestamp.getMonth() + 1).toString() : (timestamp.getMonth() + 1).toString();
+    const month = timestamp.getMonth() + 1 < 10 ? '0' + (timestamp.getMonth() + 1).toString() : (timestamp.getMonth() + 1).toString();
     const day = timestamp.getDate() < 10 ? '0' + timestamp.getDate().toString() : timestamp.getDate().toString();
     const hour = timestamp.getHours() < 10 ? '0' + timestamp.getHours().toString() : timestamp.getHours().toString();
     const min = timestamp.getMinutes() < 10 ? '0' + timestamp.getMinutes().toString() : timestamp.getMinutes().toString();
     const sec = timestamp.getSeconds() < 10 ? '0' + timestamp.getSeconds().toString() : timestamp.getSeconds().toString();
 
-    return `${year}-${month}-${day} ${hour}:${min}:${sec}`;
+    return {
+        year: year,
+        month: month,
+        day: day,
+        hour: hour,
+        min: min,
+        sec: sec,
+    };
 }
