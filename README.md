@@ -107,6 +107,6 @@
 local 환경에서 서버 실행
 start: npm run start
 
-dev 환경에서 서버 실행
+dev 환경에서 서버 실행 (pm2를 통해서 실행)
 dev: npm run dev
 ```

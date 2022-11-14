@@ -9,7 +9,7 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "start": "NODE_ENV=local nest start --watch",
-    "dev": "NODE_ENV=dev node ./dist/src/main.js"
+    "dev": "pm2 start config/ecosystem/ecosystem.config.js"
   },
   "dependencies": {
     "@nestjs/common": "^9.1.2",
