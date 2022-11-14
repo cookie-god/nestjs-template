@@ -12,6 +12,12 @@ import {PostSearchEmailRequest} from "../auth/dto/request/post-search-email.requ
 import {PatchPasswordRequest} from "../auth/dto/request/patch-password.request";
 
 // Auth관련 데코레이터
+
+export const User = createParamDecorator(async (_, context: ExecutionContext) => {
+    const req = context.switchToHttp().getRequest<import('express').Request>();
+    return req.user;
+});
+
 export const PostSignIn = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const postSignInBodyData: PostSignInRequest = ctx.switchToHttp().getRequest().body;

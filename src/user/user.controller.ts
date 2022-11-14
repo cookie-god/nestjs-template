@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, Request, UseGuards} from '@nestjs/common';
+import { Controller, Get, Request, UseGuards} from '@nestjs/common';
 import {ApiHeader, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags} from '@nestjs/swagger';
 import { GetUsersResponse } from './dto/response/get-users.response';
 import { UserService } from './user.service';
@@ -10,6 +10,8 @@ import {GetUsersDetailRequest} from "./dto/request/get-users-detail.request";
 import {GetUsersDetailResponse} from "./dto/response/get-users-detail.response";
 import {HistoryType, UserType} from "../../common/variable.utils";
 import {ApiSaveService} from "../api-save.service";
+import {Payload} from "../auth/jwt/jwt.payload";
+import {User} from "../decorators/auth.decorator";
 
 @Controller('users')
 @ApiTags('Users')
@@ -21,7 +23,9 @@ export class UserController {
 
   /**
    * description : 유저 조회 API
-   * @param non-exsit
+   * @param req
+   * @param getUsersRequest
+   * @param user
    * @returns GetUsersResponse
    */
   @ApiResponse({
@@ -77,11 +81,11 @@ export class UserController {
   @ApiOperation({ summary: '유저 조회 API' })
   @UseGuards(JwtAuthGuard)
   @Get('/v1')
-  async getUsers(@GetUsers() getUsersRequest: GetUsersRequest, @Request() req: any) {
+  async getUsers(@Request() req: Request, @GetUsers() getUsersRequest: GetUsersRequest, @User() user: Payload) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.READ,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        user.id,
         '유저 조회 API',
         req,
         null,
@@ -90,7 +94,7 @@ export class UserController {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.READ,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        user.id,
         '유저 조회 API',
         req,
         res,
@@ -101,7 +105,9 @@ export class UserController {
 
   /**
    * description : 유저 상세 조회 API
-   * @param non-exsit
+   * @param req
+   * @param getUsersDetailRequest
+   * @param user
    * @returns GetUsersDetailResponse
    */
   @ApiResponse({
@@ -134,11 +140,11 @@ export class UserController {
   @ApiOperation({ summary: '유저 상세 조회 API' })
   @UseGuards(JwtAuthGuard)
   @Get('/v1/:userId')
-  async getUsersDetail(@GetUsersDetail() getUsersDetailRequest: GetUsersDetailRequest, @Request() req: any) {
+  async getUsersDetail(@Request() req: Request, @GetUsersDetail() getUsersDetailRequest: GetUsersDetailRequest, @User() user: Payload) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.READ,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        user.id,
         '유저 상세 조회 API',
         req,
         null,
@@ -147,7 +153,7 @@ export class UserController {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.READ,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        user.id,
         '유저 상세 조회 API',
         req,
         res,

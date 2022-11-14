@@ -1,6 +1,13 @@
 import {Controller, Post, Request, UseGuards, Patch} from '@nestjs/common';
 import {ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
-import {PostSignIn, PostSignUp, PatchAuthInfo, PatchPassword, PostSearchEmail} from '../decorators/auth.decorator';
+import {
+  PostSignIn,
+  PostSignUp,
+  PatchAuthInfo,
+  PatchPassword,
+  PostSearchEmail,
+  User
+} from '../decorators/auth.decorator';
 import { AuthService } from './auth.service';
 import { PostSignInResponse } from './dto/response/post-sign-in.response';
 import { PostSignInRequest } from './dto/request/post-sign-in.request';
@@ -15,6 +22,7 @@ import {HistoryType, UserType} from "../../common/variable.utils";
 import {PatchPasswordRequest} from "./dto/request/patch-password.request";
 import {PostSearchEmailRequest} from "./dto/request/post-search-email.request";
 import {PostSearchEmailResponse} from "./dto/response/post-search-email.response";
+import {Payload} from "./jwt/jwt.payload";
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -26,6 +34,7 @@ export class AuthController {
 
   /**
    * description : 로그인 API
+   * @param req
    * @param postSignInRequest
    * @returns PostSignInResponse
    */
@@ -69,11 +78,11 @@ export class AuthController {
   @ApiOperation({ summary: '로그인 API' })
   @ApiBody({ description: '로그인 DTO', type: PostSignInRequest })
   @Post('v1/sign-in')
-  async postSignIn(@Request() req: any, @PostSignIn() postSignInRequest: PostSignInRequest) {
+  async postSignIn(@Request() req: Request, @PostSignIn() postSignInRequest: PostSignInRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.READ,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        0,
         '로그인 API',
         req,
         null,
@@ -82,7 +91,7 @@ export class AuthController {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.READ,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        0,
         '로그인 API',
         req,
         res,
@@ -93,6 +102,7 @@ export class AuthController {
 
   /**
    * description : 회원가입 API
+   * @param req
    * @param postSignUpRequest
    * @returns PostSignUpResponse
    */
@@ -164,11 +174,11 @@ export class AuthController {
   @ApiOperation({ summary: '회원가입 API' })
   @ApiBody({ description: '회원가입 DTO', type: PostSignUpRequest })
   @Post('v1/sign-up')
-  async postSignUp(@Request() req: any, @PostSignUp() postSignUpRequest: PostSignUpRequest) {
+  async postSignUp(@Request() req: Request, @PostSignUp() postSignUpRequest: PostSignUpRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.CREATE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        0,
         '회원가입 API',
         req,
         null,
@@ -177,7 +187,7 @@ export class AuthController {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.CREATE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        0,
         '회원가입 API',
         req,
         res,
@@ -188,7 +198,9 @@ export class AuthController {
 
   /**
    * description : 회원 정보 수정 API
+   * @param req
    * @param patchAuthInfoRequest
+   * @param user
    * @returns BaseResponse
    */
   @ApiResponse({
@@ -229,20 +241,20 @@ export class AuthController {
   })
   @ApiBody({ description: '회원 정보 수정 DTO', type: PatchAuthInfoRequest })
   @Patch('v1')
-  async patchAuthInfo(@Request() req: any, @PatchAuthInfo() patchAuthInfoRequest: PatchAuthInfoRequest) {
+  async patchAuthInfo(@Request() req: Request, @PatchAuthInfo() patchAuthInfoRequest: PatchAuthInfoRequest, @User() user: Payload) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        user.id,
         '회원 정보 수정 API',
         req,
         null,
     );
-    const res = await this.authService.editUser(patchAuthInfoRequest, req.user);
+    const res = await this.authService.editUser(patchAuthInfoRequest, user);
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        user.id,
         '회원 정보 수정 API',
         req,
         res,
@@ -253,7 +265,8 @@ export class AuthController {
 
   /**
    * description : 이메일 찾기 API
-   * @param postSearchUserEmailRequest
+   * @param req
+   * @param postSearchEmailRequest
    * @returns PostSearchEmailResponse
    */
   @ApiResponse({
@@ -280,11 +293,11 @@ export class AuthController {
   @ApiOperation({ summary: '이메일 찾기 API' })
   @ApiBody({ description: '이메일 찾기 DTO', type: PostSearchEmailRequest })
   @Post('v1/search-email')
-  async postSearchEmail(@Request() req: any, @PostSearchEmail() postSearchEmailRequest: PostSearchEmailRequest) {
+  async postSearchEmail(@Request() req: Request, @PostSearchEmail() postSearchEmailRequest: PostSearchEmailRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        0,
         '이메일 찾기 API',
         req,
         null,
@@ -293,7 +306,7 @@ export class AuthController {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        0,
         '이메일 찾기 API',
         req,
         res,
@@ -304,6 +317,7 @@ export class AuthController {
 
   /**
    * description : 회원 비밀번호 재설정 API
+   * @param req
    * @param patchPasswordRequest
    * @returns BaseResponse
    */
@@ -359,11 +373,11 @@ export class AuthController {
   @ApiOperation({ summary: '회원 비밀번호 재설정 API' })
   @ApiBody({ description: '회원 비밀번호 재설정 DTO', type: PatchPasswordRequest })
   @Patch('v1/password')
-  async patchPassword(@Request() req: any, @PatchPassword() patchPasswordRequest: PatchPasswordRequest) {
+  async patchPassword(@Request() req: Request, @PatchPassword() patchPasswordRequest: PatchPasswordRequest) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        0,
         '회원 비밀번호 재설정 API',
         req,
         null,
@@ -372,7 +386,7 @@ export class AuthController {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.UPDATE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        0,
         '회원 비밀번호 재설정 API',
         req,
         res,
@@ -383,6 +397,8 @@ export class AuthController {
 
   /**
    * description : 회원 탈퇴 API
+   * @param req
+   * @param user
    * @returns BaseResponse
    */
   @ApiResponse({
@@ -410,20 +426,20 @@ export class AuthController {
     example: 'JWT TOKEN',
   })
   @Patch('v1/status')
-  async patchAuthStatus(@Request() req: any) {
+  async patchAuthStatus(@Request() req: Request, @User() user: Payload) {
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.DELETE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        user.id,
         '회원 탈퇴 API',
         req,
         null,
     );
-    const res = await this.authService.removeUser(req.user);
+    const res = await this.authService.removeUser(user);
     await this.apiSaveService.saveApiCallHistory(
         HistoryType.DELETE,
         UserType.USER,
-        req.user ? req.user.id : 0,
+        user.id,
         '회원 탈퇴 API',
         req,
         res,
