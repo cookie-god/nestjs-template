@@ -36,7 +36,7 @@ export class AuthService {
     currentFunction = 'signInUser'
     try {
       // 입력한 이메일에 해당하는 유저값 추출
-      const user = await this.userRepository.findOne({
+      const user: UserInfo = await this.userRepository.findOne({
         where: { email: postSignInRequest.email, status: 'ACTIVE' },
       });
 
@@ -46,7 +46,7 @@ export class AuthService {
       }
 
       //유저 아이디에 해당하는 Salt값 추출
-      const userSalt = await this.userSaltRepository.findOne({
+      const userSalt: UserSalt = await this.userSaltRepository.findOne({
         where: { userId: user.id },
       });
 
@@ -68,7 +68,7 @@ export class AuthService {
       };
 
       //토큰 생성
-      const token = await this.jwtService.sign(payload);
+      const token = this.jwtService.sign(payload);
 
       // Response의 result 객체에 Data를 담는 부분
       const data = {
@@ -92,7 +92,7 @@ export class AuthService {
       await queryRunner.startTransaction();
       try {
         // 가입한 이메일이 존재하는지 체크
-        const isExistUserByEmail = await this.userRepository.count({
+        const isExistUserByEmail: number = await this.userRepository.count({
           where: { email: postSignUpRequest.email, status: Status.ACTIVE },
         });
 
@@ -101,7 +101,7 @@ export class AuthService {
         }
 
         // 가입한 핸드폰 번호 있는지 체크
-        const isExistUserByPhoneNumber = await this.userRepository.count({
+        const isExistUserByPhoneNumber: number = await this.userRepository.count({
           where: {
             phoneNumber: postSignUpRequest.phoneNumber,
             status: Status.ACTIVE,
@@ -113,7 +113,7 @@ export class AuthService {
         }
 
         // 가입한 닉네임 있는지 체크
-        const isExistUserByNickname = await this.userRepository.count({
+        const isExistUserByNickname: number = await this.userRepository.count({
           where: {
             nickname: postSignUpRequest.nickname,
             status: Status.ACTIVE,
@@ -178,7 +178,7 @@ export class AuthService {
       try {
 
         // 가입한 닉네임 있는지 체크
-        const isExistUserByNickname = await this.userRepository.count({
+        const isExistUserByNickname: number = await this.userRepository.count({
           where: {
             nickname: patchAuthInfo.nickname,
             id: Not(payload.id),
@@ -190,7 +190,7 @@ export class AuthService {
           return RESPONSE.EXIST_NICKNAME;
         }
 
-        const user = await this.userRepository.findOne({
+        const user: UserInfo = await this.userRepository.findOne({
           where: {
             id: payload.id,
             status: Status.ACTIVE,
@@ -223,7 +223,7 @@ export class AuthService {
     currentFunction = 'searchEmail'
     try {
       // 입력한 이메일에 해당하는 유저값 추출
-      const user = await this.userRepository.findOne({
+      const user: UserInfo = await this.userRepository.findOne({
         where: { phoneNumber: postSearchEmailRequest.phoneNumber, status: 'ACTIVE' },
       });
 
@@ -253,7 +253,7 @@ export class AuthService {
       await queryRunner.startTransaction();
       try {
         // 유저 정보 조회
-        const user = await this.userRepository.findOne({
+        const user: UserInfo = await this.userRepository.findOne({
           where: {
             email: patchUserPasswordRequest.email,
             phoneNumber: patchUserPasswordRequest.phoneNumber,
@@ -273,7 +273,7 @@ export class AuthService {
         await queryRunner.manager.update(UserInfo, {id: user.id}, user)
 
         // 유저 소금값 조회 및 업데이트
-        const userSalt = await this.userSaltRepository.findOne({
+        const userSalt: UserSalt = await this.userSaltRepository.findOne({
           where: { userId: user.id },
         });
         userSalt.salt = securityData.salt;
@@ -305,7 +305,7 @@ export class AuthService {
       await queryRunner.connect();
       await queryRunner.startTransaction();
       try {
-        const user = await this.userRepository.findOne({
+        const user: UserInfo = await this.userRepository.findOne({
           where: {
             id: payload.id,
             status: Status.ACTIVE,
