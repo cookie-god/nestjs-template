@@ -54,6 +54,7 @@ export class AuthService {
       if (
         !await validatePassword(
             postSignInRequest.password,
+            userSalt.salt,
             user.password,
         )
       ) {
