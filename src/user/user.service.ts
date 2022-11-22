@@ -11,8 +11,8 @@ import {GetUsersDetailRequest} from "./dto/request/get-users-detail.request";
 import {GetUsersResultData, Users} from "./dto/response/get-users.response";
 import {DateComponent} from "../../common/variable.utils";
 import {GetUsersDetailResultData} from "./dto/response/get-users-detail.response";
-const location = __dirname + '/user.service.ts';
-let currentFunction;
+const location: string = __dirname + '/user.service.ts';
+let currentFunction: string;
 
 @Injectable()
 export class UserService {
