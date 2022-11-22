@@ -12,7 +12,7 @@ import { UserInfo } from '../../entity/user-info.entity';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(UserInfo)
-    private readonly adminRepository: Repository<UserInfo>,
+    private readonly userRepository: Repository<UserInfo>,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromHeader('x-access-token'),
@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: Payload) {
     // User 정보 추출
-    const user = await this.adminRepository.findOne({
+    const user: UserInfo = await this.userRepository.findOne({
       where: { id: payload.id, status: 'ACTIVE' },
     });
     // 유저가 존재하지 않는 경우

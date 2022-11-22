@@ -3,7 +3,7 @@ import {IsNumber, IsObject, IsString} from 'class-validator';
 import { BaseResponse } from 'config/base.response';
 
 // result 객체 정보
-class GetUsersDetailResultData {
+export class GetUsersDetailResultData {
   @ApiProperty({
     example: 1,
     description: '유저 아이디',

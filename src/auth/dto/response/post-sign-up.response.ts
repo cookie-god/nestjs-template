@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsArray, IsString } from 'class-validator';
 import { BaseResponse } from 'config/base.response';
 
-class PostSignUpResultData {
+export class PostSignUpResultData {
   @ApiProperty({
     example: 1,
     description: '사용자 아이디',

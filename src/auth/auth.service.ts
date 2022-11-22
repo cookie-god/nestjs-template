@@ -9,7 +9,7 @@ import {
   saltHashPassword,
   validatePassword,
 } from '../../config/security.utils';
-import { Status } from 'common/variable.utils';
+import {SecurityPassword, Status} from 'common/variable.utils';
 import { UserInfo } from '../entity/user-info.entity';
 import { UserSalt } from '../entity/user-salt.entity';
 import { PostSignInRequest } from './dto/request/post-sign-in.request';
@@ -18,8 +18,11 @@ import {errorLogger} from "../../config/logger/logger.function";
 import {PatchAuthInfoRequest} from "./dto/request/patch-auth-info.request";
 import {PatchPasswordRequest} from "./dto/request/patch-password.request";
 import {PostSearchEmailRequest} from "./dto/request/post-search-email.request";
-const location = __dirname + '/auth.service.ts';
-let currentFunction;
+import {PostSignInResultData} from "./dto/response/post-sign-in.response";
+import {PostSignUpResultData} from "./dto/response/post-sign-up.response";
+import {PostSearchEmailResultData} from "./dto/response/post-search-email.response";
+const location: string = __dirname + '/auth.service.ts';
+let currentFunction: string;
 
 @Injectable()
 export class AuthService {
@@ -51,13 +54,7 @@ export class AuthService {
       });
 
       // Salt값을 이용해서 현재 입력된 비밀번호와 암호화된 비밀번호 검증
-      if (
-        !await validatePassword(
-            postSignInRequest.password,
-            userSalt.salt,
-            user.password,
-        )
-      ) {
+      if (!validatePassword(postSignInRequest.password, userSalt.salt, user.password)) {
         return RESPONSE.NON_MATCH_PASSWORD;
       }
 
@@ -69,16 +66,16 @@ export class AuthService {
       };
 
       //토큰 생성
-      const token = this.jwtService.sign(payload);
+      const token: string = this.jwtService.sign(payload);
 
       // Response의 result 객체에 Data를 담는 부분
-      const data = {
+      const data: PostSignInResultData = {
         jwt: token,
         id: user.id,
+        email: user.email,
       };
 
-      const result = makeResponse(RESPONSE.SUCCESS, data);
-      return result;
+      return makeResponse(RESPONSE.SUCCESS, data);
     } catch (error) {
       errorLogger(error, location, currentFunction);
       return RESPONSE.ERROR;
@@ -126,10 +123,10 @@ export class AuthService {
         }
 
         // 비밀번호 암호화
-        const securityData = await saltHashPassword(postSignUpRequest.password);
+        const securityData: SecurityPassword = await saltHashPassword(postSignUpRequest.password);
 
         // UserInfo 인스턴스 생성후, 정보 담는 부분
-        const userInfo = new UserInfo();
+        const userInfo: UserInfo = new UserInfo();
         userInfo.email = postSignUpRequest.email;
         userInfo.password = securityData.hashedPassword;
         userInfo.phoneNumber = postSignUpRequest.phoneNumber;
@@ -137,26 +134,24 @@ export class AuthService {
         userInfo.status = Status.ACTIVE;
         userInfo.createdAt = defaultCurrentDateTime();
         userInfo.updatedAt = defaultCurrentDateTime();
-        const createUserData = await queryRunner.manager.save(userInfo);
+        const createUserData: UserInfo = await queryRunner.manager.save(userInfo);
 
         // AdminSalt 인스턴스 생성후, 정보 담는 부분
-        const userSalt = new UserSalt();
+        const userSalt: UserSalt = new UserSalt();
         userSalt.salt = securityData.salt;
         userSalt.userId = createUserData.id;
-        await await queryRunner.manager.save(userSalt);
+        await queryRunner.manager.save(userSalt);
 
         // Commit
         await queryRunner.commitTransaction();
 
         // Response의 result 객체에 Data를 담는 부분
-        const data = {
+        const data: PostSignUpResultData = {
           id: createUserData.id,
           email: createUserData.email,
         };
 
-        const result = makeResponse(RESPONSE.SUCCESS, data);
-
-        return result;
+        return makeResponse(RESPONSE.SUCCESS, data);
       } catch (error) {
         // Rollback
         await queryRunner.rollbackTransaction();
@@ -204,9 +199,8 @@ export class AuthService {
 
         // Commit
         await queryRunner.commitTransaction();
-        const result = makeResponse(RESPONSE.SUCCESS, undefined);
 
-        return result;
+        return makeResponse(RESPONSE.SUCCESS, undefined);
       } catch (error) {
         // Rollback
         await queryRunner.rollbackTransaction();
@@ -234,12 +228,11 @@ export class AuthService {
       }
 
       // Response의 result 객체에 Data를 담는 부분
-      const data = {
+      const data: PostSearchEmailResultData = {
         email: user.email,
       };
 
-      const result = makeResponse(RESPONSE.SUCCESS, data);
-      return result;
+      return makeResponse(RESPONSE.SUCCESS, data);
     } catch (error) {
       errorLogger(error, location, currentFunction);
       return RESPONSE.ERROR;
@@ -266,7 +259,7 @@ export class AuthService {
         }
 
         // 비밀번호 암호화
-        const securityData = await saltHashPassword(patchUserPasswordRequest.password);
+        const securityData: SecurityPassword = await saltHashPassword(patchUserPasswordRequest.password);
 
         // 유저 정보 수정
         user.password = securityData.hashedPassword;
@@ -283,9 +276,8 @@ export class AuthService {
 
         // Commit
         await queryRunner.commitTransaction();
-        const result = makeResponse(RESPONSE.SUCCESS, undefined);
 
-        return result;
+        return makeResponse(RESPONSE.SUCCESS, undefined);
       } catch (error) {
         // Rollback
         await queryRunner.rollbackTransaction();
@@ -319,9 +311,8 @@ export class AuthService {
 
         // Commit
         await queryRunner.commitTransaction();
-        const result = makeResponse(RESPONSE.SUCCESS, undefined);
 
-        return result;
+        return makeResponse(RESPONSE.SUCCESS, undefined);
       } catch (error) {
         // Rollback
         await queryRunner.rollbackTransaction();

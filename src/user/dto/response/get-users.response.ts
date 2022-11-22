@@ -3,7 +3,7 @@ import { IsArray, IsNumber, IsString } from 'class-validator';
 import { BaseResponse } from 'config/base.response';
 
 // user 객체 리스트 정보
-class User {
+export class Users {
   @ApiProperty({
     example: 1,
     description: '유저 아이디',
@@ -54,15 +54,15 @@ class User {
 }
 
 // result 객체 정보
-class GetUsersResultData {
+export class GetUsersResultData {
   @ApiProperty({
     description: 'user 객체 리스트',
-    type: User,
+    type: Users,
     required: true,
     isArray: true,
   })
   @IsArray()
-  users: Array<User>;
+  users: Array<Users>;
 
   @ApiProperty({
     example: 20,

@@ -13,3 +13,18 @@ export enum HistoryType {
   UPDATE = 'UPDATE',
   DELETE = 'DELETE',
 }
+
+export interface DateComponent {
+  year: string;
+  month: string;
+  day: string;
+  hour: string;
+  min: string;
+  sec: string;
+  milSec: string;
+}
+
+export interface SecurityPassword {
+  salt: string;
+  hashedPassword: string;
+}

@@ -8,6 +8,9 @@ import {GetUsersRequest} from "./dto/request/get-users.request";
 import {UserQuery} from "./user.query";
 import {errorLogger} from "../../config/logger/logger.function";
 import {GetUsersDetailRequest} from "./dto/request/get-users-detail.request";
+import {GetUsersResultData, Users} from "./dto/response/get-users.response";
+import {DateComponent} from "../../common/variable.utils";
+import {GetUsersDetailResultData} from "./dto/response/get-users-detail.response";
 const location = __dirname + '/user.service.ts';
 let currentFunction;
 
@@ -27,34 +30,32 @@ export class UserService {
       await queryRunner.connect();
       try {
         const offset: number = getUsersRequest.size * (getUsersRequest.page - 1);
-        const users = await queryRunner.query(
+        const users: Array<Users> = await queryRunner.query(
             this.userQuery.retrieveUsers(
                 getUsersRequest,
                 offset,
             ).retrieveUsersQuery,
         );
 
-        let dateFormat
+        let dateFormat: DateComponent
         for (const item of users) {
           dateFormat = makeKSTToDateComponent(item.createdAt)
           item.createdAt = `${dateFormat.year}-${dateFormat.month}-${dateFormat.day} ${dateFormat.hour}:${dateFormat.min}:${dateFormat.sec}`;
         }
 
-        const totalCount = await queryRunner.query(
+        const totalCount: Array<Users> = await queryRunner.query(
             this.userQuery.retrieveUsers(
                 getUsersRequest,
                 offset,
             ).retrieveUsersCountQuery
         );
 
-        const data = {
+        const data: GetUsersResultData = {
           users: users,
           totalCount: totalCount.length,
         };
 
-        const result = makeResponse(RESPONSE.SUCCESS, data);
-
-        return result;
+        return makeResponse(RESPONSE.SUCCESS, data);
       } catch (error) {
         errorLogger(error, location, currentFunction);
         return RESPONSE.ERROR;
@@ -72,7 +73,7 @@ export class UserService {
       const queryRunner = this.connection.createQueryRunner();
       await queryRunner.connect();
       try {
-        const [user] = await queryRunner.query(
+        const [user]: Array<GetUsersDetailResultData> = await queryRunner.query(
             this.userQuery.retrieveUserById(getUsersDetailRequest)
         )
 
@@ -80,11 +81,10 @@ export class UserService {
           return RESPONSE.NON_EXIST_USER;
         }
 
-        const dateFormat = makeKSTToDateComponent(user.createdAt)
+        const dateFormat: DateComponent = makeKSTToDateComponent(user.createdAt)
         user.createdAt = `${dateFormat.year}-${dateFormat.month}-${dateFormat.day} ${dateFormat.hour}:${dateFormat.min}:${dateFormat.sec}`;
-        const result = makeResponse(RESPONSE.SUCCESS, user);
 
-        return result;
+        return makeResponse(RESPONSE.SUCCESS, user);
       } catch (error) {
         errorLogger(error, location, currentFunction);
         return RESPONSE.ERROR;
