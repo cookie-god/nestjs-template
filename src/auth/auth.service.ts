@@ -9,7 +9,7 @@ import {
   saltHashPassword,
   validatePassword,
 } from '../../config/security.utils';
-import {SecurityPassword, Status} from 'common/variable.utils';
+import {AccountStatus, SecurityPassword, Status} from 'common/variable.utils';
 import { UserInfo } from '../entity/user-info.entity';
 import { UserSalt } from '../entity/user-salt.entity';
 import { PostSignInRequest } from './dto/request/post-sign-in.request';
@@ -131,6 +131,7 @@ export class AuthService {
         userInfo.password = securityData.hashedPassword;
         userInfo.phoneNumber = postSignUpRequest.phoneNumber;
         userInfo.nickname = postSignUpRequest.nickname;
+        userInfo.accountStatus = AccountStatus.ACTIVE;
         userInfo.status = Status.ACTIVE;
         userInfo.createdAt = defaultCurrentDateTime();
         userInfo.updatedAt = defaultCurrentDateTime();
@@ -306,6 +307,7 @@ export class AuthService {
         })
 
         user.status = Status.INACTIVE;
+        user.accountStatus = AccountStatus.INACTIVE;
         user.updatedAt = defaultCurrentDateTime();
         await queryRunner.manager.update(UserInfo, {id: user.id}, user)
 

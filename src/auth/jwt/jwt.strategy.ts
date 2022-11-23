@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       where: { id: payload.id, status: 'ACTIVE' },
     });
     // 유저가 존재하지 않는 경우
-    if (user == undefined) {
+    if (!user) {
       throw new HttpException(RESPONSE.NON_EXIST_USER, 201);
     }
     // payload값 user로 리턴

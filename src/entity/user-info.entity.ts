@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {AccountStatus} from "../../common/variable.utils";
 
 @Entity('UserInfo')
 export class UserInfo {
@@ -16,6 +17,9 @@ export class UserInfo {
 
   @Column({ length: 20 })
   nickname: string;
+
+  @Column({ length: 20, default: AccountStatus.ACTIVE, nullable: false })
+  accountStatus: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: string;
